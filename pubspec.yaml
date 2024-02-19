@@ -20,7 +20,6 @@ dependencies:
   fluttertoast: ^8.2.4
   flutter_spinkit: ^5.2.0
 
-
   cupertino_icons: ^1.0.2
 
 dev_dependencies:
@@ -35,6 +34,7 @@ flutter:
 
   assets:
      - assets/bottom_nav_icons/
+     - assets/auth/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
