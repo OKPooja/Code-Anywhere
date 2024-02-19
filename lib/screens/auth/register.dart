@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:project/auth/register.dart';
-import '../utils/colors.dart';
-import '../widgets/custom_button.dart';
-import '../widgets/custom_text_field.dart';
+import '../../widgets/custom_button.dart';
+import '../../widgets/custom_text_field.dart';
+import 'login.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({Key? key}) : super(key: key);
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
+  TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
@@ -36,7 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       Padding(
                         padding: EdgeInsets.only(top: 60.h, left: 30.w),
                         child: Text(
-                          "WELCOME \nBACK!",
+                          "LET'S \nGET\nSTARTED",
                           style: TextStyle(
                             fontSize: 25.sp,
                             fontWeight: FontWeight.w700,
@@ -53,13 +52,30 @@ class _LoginScreenState extends State<LoginScreen> {
                 ],
               ),
               SizedBox(
-                height: 40.h,
+                height: 25.h,
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 30.w),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Text(
+                      'Name',
+                      style: TextStyle(
+                        fontSize: 18.sp,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10.h,
+                    ),
+                    CustomTextField(
+                      controller: nameController,
+                      keyboardType: TextInputType.text,
+                      suffixIcon: Icons.person,
+                    ),
+                    SizedBox(
+                      height: 15.h,
+                    ),
                     Text(
                       'E-mail',
                       style: TextStyle(
@@ -92,10 +108,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       suffixIcon: Icons.remove_red_eye_sharp,
                     ),
                     SizedBox(
-                      height: 70.h,
+                      height: 30.h,
                     ),
                     CustomElevatedButton(
-                      text: 'Login',
+                      text: 'Create an Account',
                       onPressed: () {
                       },
                     ),
@@ -103,13 +119,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               SizedBox(
-                height: 30.h,
+                height: 10.h,
               ),
               Center(
                 child: Text(
                   'or',
                   style: TextStyle(
-                      fontSize: 20.sp
+                    fontSize: 20.sp
                   ),
                 ),
               ),
@@ -144,20 +160,20 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Don't have an account?",
+                    'Already have an account?',
                     style: TextStyle(
                         fontSize: 14.sp
                     ),
                   ),
                   GestureDetector(
                     onTap: (){
-                      Get.to(() => const RegisterScreen());
+                      Get.to(() => const LoginScreen());
                     },
                     child: Text(
-                      ' Sign up',
+                      ' Sign in',
                       style: TextStyle(
                           fontSize: 14.sp,
-                          fontWeight: FontWeight.bold
+                        fontWeight: FontWeight.bold
                       ),
                     ),
                   ),

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:project/learning_section/edu.dart';
-import 'package:project/problems/problems.dart';
 import 'package:project/profile/profile.dart';
-import 'home/home.dart';
+import 'package:project/screens/home/home.dart';
+import 'package:project/screens/learning_section/edu.dart';
+import 'package:project/screens/problems/problems.dart';
 
 
 class BottomNav extends StatefulWidget {
@@ -76,7 +76,7 @@ class _BottomNavState extends State<BottomNav> {
                     color: Color(0xff959595),
                     fontFamily: "Lato",
                   ),
-                  selectedLabelStyle: TextStyle(
+                  selectedLabelStyle: const TextStyle(
                     color: Colors.black54,
                     fontFamily: "Lato",
                     fontWeight: FontWeight.w500,
