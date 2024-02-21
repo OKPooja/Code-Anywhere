@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
   final TextInputType keyboardType;
   final IconData? suffixIcon;
+  final bool obscureText;
 
   const CustomTextField({
     Key? key,
     required this.controller,
     this.keyboardType = TextInputType.text,
     this.suffixIcon,
+    this.obscureText = false,
   }) : super(key: key);
 
   @override
@@ -17,6 +20,7 @@ class CustomTextField extends StatelessWidget {
     return TextField(
       controller: controller,
       keyboardType: keyboardType,
+      obscureText: obscureText,
       decoration: InputDecoration(
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5.0),

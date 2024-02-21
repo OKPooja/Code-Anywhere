@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:project/bottom_nav.dart';
 import 'package:project/screens/auth/register.dart';
+import 'package:project/shared_preferences_helper.dart';
 
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_text_field.dart';
@@ -16,6 +19,17 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+
+  _login(){
+    if(emailController.text.isEmpty){
+      Fluttertoast.showToast(msg: "Please enter valid email id");
+    } else if(passwordController.text.isEmpty){
+      Fluttertoast.showToast(msg: "Please enter password");
+    } else{
+      SharedPreferencesHelper.setIsLoggedIn(status: true);
+      Get.offAll(() => BottomNav(currentIndex: 0));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,6 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       controller: passwordController,
                       keyboardType: TextInputType.text,
                       suffixIcon: Icons.remove_red_eye_sharp,
+                      obscureText: true,
                     ),
                     SizedBox(
                       height: 70.h,
@@ -96,6 +111,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     CustomElevatedButton(
                       text: 'Login',
                       onPressed: () {
+                        _login();
                       },
                     ),
                   ],
@@ -150,6 +166,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   GestureDetector(
                     onTap: (){
+                      Get.back();
                       Get.to(() => const RegisterScreen());
                     },
                     child: Text(

@@ -31,11 +31,22 @@ dev_dependencies:
 flutter:
 
   uses-material-design: true
+  fonts:
+    - family: Nunito
+      fonts:
+        - asset: assets/fonts/Nunito-Regular.ttf
+        - asset: assets/fonts/Nunito-Bold.ttf
+        - asset: assets/fonts/Nunito-Italic.ttf
+    - family: PragatiNarrow
+      fonts:
+        - asset: assets/fonts/PragatiNarrow-Bold.ttf
+        - asset: assets/fonts/PragatiNarrow-Bold.ttf
 
   assets:
      - assets/bottom_nav_icons/
      - assets/auth/
      - assets/onboarding_screens/
+     - assets/home/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

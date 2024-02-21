@@ -54,7 +54,11 @@ class MyApp extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.black54),
             useMaterial3: true,
           ),
-          home: (isFirstTime == null || isFirstTime == true) ? const OnBoardingScreen() : const LoginScreen(),
+          home: (isFirstTime == null || isFirstTime == true)
+              ? const OnBoardingScreen()
+              : (SharedPreferencesHelper.getIsLoggedIn() == true)
+                ? BottomNav(currentIndex: 0)
+                  : const LoginScreen(),
           //home: BottomNav(currentIndex: 0,),
         );
       },

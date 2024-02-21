@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import '../../bottom_nav.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_text_field.dart';
 import 'login.dart';
@@ -16,6 +18,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+
+  _register(){
+    if(emailController.text.isEmpty){
+      Fluttertoast.showToast(msg: "Please enter valid email id");
+    } else if(nameController.text.isEmpty){
+      Fluttertoast.showToast(msg: "Please enter your name");
+    } else if(passwordController.text.isEmpty){
+      Fluttertoast.showToast(msg: "Please enter password");
+    } else{
+      Get.offAll(() => BottomNav(currentIndex: 0));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -113,6 +127,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     CustomElevatedButton(
                       text: 'Create an Account',
                       onPressed: () {
+                        _register();
                       },
                     ),
                   ],
@@ -167,6 +182,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                   GestureDetector(
                     onTap: (){
+                      Get.back();
                       Get.to(() => const LoginScreen());
                     },
                     child: Text(

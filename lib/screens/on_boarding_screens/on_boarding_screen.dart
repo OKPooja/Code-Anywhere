@@ -83,7 +83,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                     content[index].title,
                     style: TextStyle(
                       fontSize: 30.sp,
-                      fontWeight: FontWeight.bold
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'PragatiNarrow'
                     ),
                   ),
                 ),
@@ -95,6 +96,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                       content[index].description,
                       style: TextStyle(
                           fontSize: 16.sp,
+                        fontFamily: 'Nunito'
                       ),
                       textAlign: TextAlign.center,
                     ),

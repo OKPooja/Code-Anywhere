@@ -4,6 +4,7 @@ import 'package:project/profile/profile.dart';
 import 'package:project/screens/home/home.dart';
 import 'package:project/screens/learning_section/edu.dart';
 import 'package:project/screens/problems/problems.dart';
+import 'package:project/utils/colors.dart';
 
 
 class BottomNav extends StatefulWidget {
@@ -41,6 +42,35 @@ class _BottomNavState extends State<BottomNav> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: Padding(
+        padding: EdgeInsets.only(bottom: 60.h),
+        child: FloatingActionButton(
+          isExtended: true,
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            side: const BorderSide(
+              width: 8,
+              color: Colors.white,
+            ),
+            borderRadius: BorderRadius.circular(100),
+          ),
+          backgroundColor: AppColors.primary,
+          splashColor: Colors.transparent,
+          focusColor: Colors.transparent,
+          hoverColor: Colors.transparent,
+          onPressed: () async {
+          },
+          child: Center(
+            child: Image.asset(
+              "assets/bottom_nav_icons/Console.png",
+              width: 20.w,
+              height: 20.h,
+            ),
+          ),
+        ),
+      ),
+      floatingActionButtonLocation:
+      FloatingActionButtonLocation.centerDocked,
       body: Stack(
         children: [
           pages.elementAt(_selectedIndex),
@@ -50,8 +80,6 @@ class _BottomNavState extends State<BottomNav> {
               alignment: Alignment.bottomCenter,
               child: Container(
                 height: 70.h,
-                //duration: Duration(milliseconds: 500),
-                //curve: Curves.easeInOut,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(12.r)),
                   color: Colors.white,
@@ -85,53 +113,61 @@ class _BottomNavState extends State<BottomNav> {
                   items: <BottomNavigationBarItem>[
                     BottomNavigationBarItem(
                       activeIcon: Image.asset(
-                        'assets/bottom_nav_icons/home_filled.png',
+                        'assets/bottom_nav_icons/Home.png',
                         width: 24,
                         height: 24,
+                        color: AppColors.primary,
                       ),
                       icon: Image.asset(
-                        'assets/bottom_nav_icons/home_outlined.png',
+                        'assets/bottom_nav_icons/Home.png',
                         width: 24,
                         height: 24,
+                        color: Colors.grey,
                       ),
                       label: 'Home',
                     ),
                     BottomNavigationBarItem(
                       activeIcon: Image.asset(
-                        'assets/bottom_nav_icons/owners_filled.png',
+                        'assets/bottom_nav_icons/problems.png',
                         width: 26,
                         height: 26,
+                        color: AppColors.primary,
                       ),
                       icon: Image.asset(
-                        'assets/bottom_nav_icons/owners_outlined.png',
+                        'assets/bottom_nav_icons/problems.png',
                         width: 26,
                         height: 26,
+                        color: Colors.grey,
                       ),
                       label: 'Problems',
                     ),
                     BottomNavigationBarItem(
                       activeIcon: Image.asset(
-                        'assets/bottom_nav_icons/add_filled.png',
+                        'assets/bottom_nav_icons/learn.png',
                         width: 24,
                         height: 24,
+                        color: AppColors.primary,
                       ),
                       icon: Image.asset(
-                        'assets/bottom_nav_icons/add_outlined.png',
+                        'assets/bottom_nav_icons/learn.png',
                         width: 24,
                         height: 24,
+                        color: Colors.grey,
                       ),
                       label: 'Learn',
                     ),
                     BottomNavigationBarItem(
                       activeIcon: Image.asset(
-                        'assets/bottom_nav_icons/profile_filled.png',
+                        'assets/bottom_nav_icons/profile.png',
                         width: 24,
                         height: 24,
+                        color: AppColors.primary,
                       ),
                       icon: Image.asset(
-                        'assets/bottom_nav_icons/profile_outlined.png',
+                        'assets/bottom_nav_icons/profile.png',
                         width: 24,
                         height: 24,
+                        color: Colors.grey,
                       ),
                       label: 'My Profile',
                     ),
