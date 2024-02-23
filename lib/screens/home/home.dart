@@ -138,7 +138,7 @@ class _HomeState extends State<Home> {
                 ),
               ),
               Container(
-                height: 500,
+                height: 550,
                 width: double.infinity,
                 decoration:  BoxDecoration(
                   //color: AppColors.primary,
@@ -229,6 +229,44 @@ class _HomeState extends State<Home> {
                           ),
                         )
                       ],
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    Stack(
+                      children: [
+                        Image.asset(
+                          'assets/home/card.png',
+                          width: 330.w,
+                        ),
+                        Positioned(
+                          left: 20.w,
+                          top: 15.h,
+                          child: Text(
+                            'Trees',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 45.sp,
+                                color: Colors.white,
+                                fontFamily: 'PragatiNarrow'),
+                          ),
+                        ),
+                        Positioned(
+                          left: 20.w,
+                          top: 60.h,
+                          child: Text(
+                            'Start learning',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 25.sp,
+                                color: Colors.white,
+                                fontFamily: 'PragatiNarrow'),
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20.h,
                     ),
                   ],
                 ),
