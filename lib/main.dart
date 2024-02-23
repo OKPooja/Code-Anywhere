@@ -8,6 +8,7 @@ import 'package:project/screens/auth/login.dart';
 import 'package:project/screens/auth/register.dart';
 import 'package:project/screens/on_boarding_screens/on_boarding_screen.dart';
 import 'package:project/shared_preferences_helper.dart';
+import 'package:project/utils/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'bottom_nav.dart';
 
@@ -51,6 +52,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'MPR',
           theme: ThemeData(
+            highlightColor: AppColors.primary,
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.black54),
             useMaterial3: true,
           ),
