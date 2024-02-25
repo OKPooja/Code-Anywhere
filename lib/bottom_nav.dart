@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:project/profile/profile.dart';
 import 'package:project/screens/compiler/compiler.dart';
 import 'package:project/screens/home/home.dart';
 import 'package:project/screens/learning_section/edu.dart';
 import 'package:project/screens/problems/problems.dart';
+import 'package:project/screens/profile/profile.dart';
 import 'package:project/utils/colors.dart';
 
 
@@ -61,7 +61,7 @@ class _BottomNavState extends State<BottomNav> {
           focusColor: Colors.transparent,
           hoverColor: Colors.transparent,
           onPressed: () async {
-            Get.to(() => CodeInputScreen());
+            Get.to(() => const CodeInputScreen());
           },
           child: Center(
             child: Image.asset(

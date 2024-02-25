@@ -11,6 +11,7 @@ import 'package:flutter_highlight/themes/monokai-sublime.dart';
 import 'package:flutter_highlight/themes/vs.dart';
 import 'package:flutter_highlight/themes/atom-one-dark.dart';
 import 'package:flutter_highlight/themes/darcula.dart';
+import 'package:project/screens/compiler/syntax_highlight.dart';
 
 import '../../utils/colors.dart';
 
@@ -23,7 +24,7 @@ class CodeInputScreen extends StatefulWidget {
 
 class _CodeInputScreenState extends State<CodeInputScreen> {
   CodeController? _codeController;
-  Map<String, TextStyle>? theme = monokaiSublimeTheme;
+  //Map<String, TextStyle>? theme = monokaiSublimeTheme;
   String _selectedLanguage = 'C++';
 
   @override
@@ -35,15 +36,14 @@ class _CodeInputScreenState extends State<CodeInputScreen> {
       patternMap: {
         r'".*"': const TextStyle(color: Colors.white),
         r'[a-zA-Z0-9]+\(.*\)': const TextStyle(color: Colors.white),
+        r'^\s*//.*$': const TextStyle(color: Colors.grey), // Single-line comment
+        r'/\*[\s\S]*?\*/': const TextStyle(color: Colors.grey), // Multi-line comment
       },
-      stringMap: {
-        "void": const TextStyle(fontWeight: FontWeight.bold, color: Color(0xFFEF9A9A)),
-        "cout": const TextStyle(fontWeight: FontWeight.bold, color: Color(0xFFFFF9C4)),
-      },
+      stringMap: theme,
     );
 
     return Scaffold(
-      backgroundColor: Color(0xFF212121),
+      backgroundColor: const Color(0xFF212121),
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(
@@ -69,7 +69,7 @@ class _CodeInputScreenState extends State<CodeInputScreen> {
               onTap: (){
 
               },
-              child: Icon(
+              child: const Icon(
                 Icons.share,
                 color: Colors.white,
               ),

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:project/utils/colors.dart';
+import 'package:semicircle_indicator/semicircle_indicator.dart';
+import 'code_mirro.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -14,10 +17,10 @@ class _HomeState extends State<Home> {
     Category(
         title: 'Data Structures and \nAlgorithms',
         image: 'assets/home/dsa.png'),
-    Category(title: 'Competitive \nProgramming', image: 'assets/home/cp.png'),
+    Category(title: 'Competitive \nProgramming', image: 'assets/home/cp.png',),
     Category(
         title: 'Data Structures and \nAlgorithms',
-        image: 'assets/home/dsa.png'),
+        image: 'assets/home/dsa.png',),
   ];
 
   @override
@@ -25,14 +28,14 @@ class _HomeState extends State<Home> {
     return Scaffold(
       //backgroundColor: Colors.white,
       backgroundColor: AppColors.primary,
-        body: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 50.h,
-                ),
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: 50.h,
+            ),
 
             ///Appbar
             Padding(
@@ -98,48 +101,53 @@ class _HomeState extends State<Home> {
               ),
               child: SizedBox(
                 height: 250.h,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: categories.length,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: EdgeInsets.only(right: 10.w, left: 10.w),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: 150.w,
-                            height: 150.h,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                              image: DecorationImage(
-                                image: AssetImage(categories[index].image),
-                                fit: BoxFit.cover,
+                child: GestureDetector(
+                  onTap: (){
+                    Get.to(() => const CodeMirrorView());
+                  },
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: categories.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: EdgeInsets.only(right: 10.w, left: 10.w),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: 150.w,
+                              height: 150.h,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10),
+                                image: DecorationImage(
+                                  image: AssetImage(categories[index].image),
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
-                          ),
-                          SizedBox(height: 10.h),
-                          Text(
-                            categories[index].title,
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 18.sp,
-                                color: Colors.white,
-                                fontFamily: 'PragatiNarrow'),
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      ),
-                    );
-                  },
+                            SizedBox(height: 10.h),
+                            Text(
+                              categories[index].title,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 18.sp,
+                                  color: Colors.white,
+                                  fontFamily: 'PragatiNarrow'),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
             ),
             Container(
               height: 550,
               width: double.infinity,
-              decoration:  BoxDecoration(
+              decoration: const BoxDecoration(
                 //color: AppColors.primary,
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
@@ -191,7 +199,28 @@ class _HomeState extends State<Home> {
                               color: Colors.white,
                               fontFamily: 'PragatiNarrow'),
                         ),
-                      )
+                      ),
+                       Positioned(
+                        right: 20.w,
+                        top: 30.h,
+                        child: const SemicircularIndicator(
+                          radius: 50,
+                          color: Colors.white,
+                          backgroundColor: Color(0XFF12223C),
+                          strokeWidth: 12,
+                          bottomPadding: 0,
+                          progress: 0.36,
+                          child: Text(
+                            '36%',
+                            style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                                fontFamily: 'Nunito'
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                   SizedBox(
@@ -226,7 +255,28 @@ class _HomeState extends State<Home> {
                               color: Colors.white,
                               fontFamily: 'PragatiNarrow'),
                         ),
-                      )
+                      ),
+                      Positioned(
+                        right: 20.w,
+                        top: 30.h,
+                        child: const SemicircularIndicator(
+                          radius: 50,
+                          color: Colors.white,
+                          backgroundColor: Color(0XFF12223C),
+                          strokeWidth: 12,
+                          bottomPadding: 0,
+                          progress: 0.70,
+                          child: Text(
+                            '70%',
+                            style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                                fontFamily: 'Nunito'
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                   SizedBox(
@@ -261,7 +311,29 @@ class _HomeState extends State<Home> {
                               color: Colors.white,
                               fontFamily: 'PragatiNarrow'),
                         ),
-                      )
+                      ),
+                      Positioned(
+                        right: 20.w,
+                        top: 30.h,
+                        child: const SemicircularIndicator(
+                          radius: 50,
+                          color: Colors.white,
+                          backgroundColor: Color(0XFF12223C),
+                          strokeWidth: 12,
+                          bottomPadding: 0,
+                          progress: 0.50,
+                          child: Text(
+                            '50%',
+                            style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                                fontFamily: 'Nunito'
+                            ),
+                          ),
+                        ),
+                      ),
+
                     ],
                   ),
                   SizedBox(
@@ -271,7 +343,9 @@ class _HomeState extends State<Home> {
               ),
             )
           ],
-        ),),);
+        ),
+      ),
+    );
   }
 }
 
