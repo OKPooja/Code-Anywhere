@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
           title: 'MPR',
           theme: ThemeData(
             highlightColor: AppColors.primary,
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.black54),
+            colorScheme: ColorScheme.fromSwatch().copyWith(primary: AppColors.primary),
             useMaterial3: true,
           ),
           home: (isFirstTime == null || isFirstTime == true)

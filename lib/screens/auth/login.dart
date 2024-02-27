@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:project/bottom_nav.dart';
 import 'package:project/screens/auth/register.dart';
 import 'package:project/shared_preferences_helper.dart';
-
+import '../../api.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_text_field.dart';
 
@@ -20,15 +20,21 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  _login(){
+  _login() async{
     if(emailController.text.isEmpty){
       Fluttertoast.showToast(msg: "Please enter valid email id");
     } else if(passwordController.text.isEmpty){
       Fluttertoast.showToast(msg: "Please enter password");
     } else{
-      SharedPreferencesHelper.setIsLoggedIn(status: true);
-      Get.offAll(() => BottomNav(currentIndex: 0));
+      // if(await api.loginUser(emailController.text, passwordController.text) == "success"){
+      //   SharedPreferencesHelper.setIsLoggedIn(status: true);
+      //   Get.offAll(() => BottomNav(currentIndex: 0));
+      // } else{
+      //   Fluttertoast.showToast(msg: "Something went wrong");
+      // }
     }
+    Get.offAll(() => BottomNav(currentIndex: 0));
+    SharedPreferencesHelper.setIsLoggedIn(status: true);
   }
 
   @override

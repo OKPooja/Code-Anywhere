@@ -17,7 +17,6 @@ import 'package:flutter/material.dart';
     "case": TextStyle(fontWeight:FontWeight.bold,color:Color(0xFF2c7ad6)),
     "catch": TextStyle(fontWeight:FontWeight.bold,color:Color(0xFF2c7ad6)),
     "class": TextStyle(fontWeight:FontWeight.bold,color:Color(0xFF2c7ad6)),
-    "": TextStyle(fontWeight:FontWeight.bold,color:Color(0xFF2c7ad6)),
     "continue": TextStyle(fontWeight:FontWeight.bold,color:Color(0xFF2c7ad6)),
     "default": TextStyle(fontWeight:FontWeight.bold,color:Color(0xFF2c7ad6)),
     "do": TextStyle(fontWeight:FontWeight.bold,color:Color(0xFF2c7ad6)),
