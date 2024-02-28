@@ -32,8 +32,8 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-
         automaticallyImplyLeading: false,
         elevation: 0,
         backgroundColor: AppColors.primary,
@@ -98,7 +98,7 @@ class _ProfileState extends State<Profile> {
                                 fontWeight: FontWeight.w700,
                                 fontSize: 20.sp,
                                 color: Colors.black,
-                                fontFamily: 'Lato')),
+                                fontFamily: 'Lato',),),
                         SizedBox(
                           height: 10.h,
                         ),

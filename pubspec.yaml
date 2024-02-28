@@ -26,6 +26,8 @@ dependencies:
   syncfusion_flutter_gauges: ^24.2.7
   flutter_codemirror: ^1.0.0+1
   semicircle_indicator: ^1.1.1
+  dio: ^4.0.0
+  pretty_dio_logger: ^1.2.0-beta-1
 
 dev_dependencies:
   flutter_test:
