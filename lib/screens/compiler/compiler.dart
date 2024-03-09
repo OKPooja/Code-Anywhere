@@ -13,6 +13,7 @@ import 'package:flutter_highlight/themes/atom-one-dark.dart';
 import 'package:flutter_highlight/themes/darcula.dart';
 import 'package:project/screens/compiler/syntax_highlight.dart';
 
+import '../../api.dart';
 import '../../utils/colors.dart';
 
 class CodeInputScreen extends StatefulWidget {
@@ -27,9 +28,43 @@ class _CodeInputScreenState extends State<CodeInputScreen> {
   //Map<String, TextStyle>? theme = monokaiSublimeTheme;
   String _selectedLanguage = 'C++';
 
+  void _showOutputBottomSheet(String output) {
+    Get.bottomSheet(
+      backgroundColor: Colors.transparent,
+      barrierColor: Colors.transparent,
+      Container(
+        width: double.infinity,
+        color: Colors.white,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                'Output',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: 10),
+              Text(
+                output,
+                style: TextStyle(fontSize: 16),
+              ),
+            ],
+          ),
+        ),
+      ),
+      isScrollControlled: true,
+      enterBottomSheetDuration: const Duration(milliseconds: 300),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    const source = "void main() {\n    cout<<\"Hello, world!\";\n}";
+    const source = ' ';
     _codeController = CodeController(
       text: source,
       language: cpp,
@@ -81,10 +116,13 @@ class _CodeInputScreenState extends State<CodeInputScreen> {
                 _selectedLanguage = value;
                 if (value == 'C++') {
                   _codeController?.language = cpp;
+                  _selectedLanguage = "C++";
                 } else if (value == 'Java') {
                   _codeController?.language = java;
+                  _selectedLanguage = "Java";
                 } else if (value == 'Python') {
                   _codeController?.language = python;
+                  _selectedLanguage = "Python";
                 }
               });
             },
@@ -117,7 +155,14 @@ class _CodeInputScreenState extends State<CodeInputScreen> {
           borderRadius: BorderRadius.circular(100),
         ),
         backgroundColor: AppColors.primary,
-        onPressed: () {},
+        onPressed: () async{
+          print("Code:");
+          print(_codeController?.text);
+          String encodedCode = Uri.encodeComponent(_codeController!.text);
+          print(encodedCode);
+          var response = await api.compileCode(encodedCode, "", _selectedLanguage);
+          _showOutputBottomSheet(response);
+        },
         child: const Icon(
           Icons.play_arrow_sharp,
         ),

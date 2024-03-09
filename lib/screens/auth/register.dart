@@ -66,7 +66,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ],
               ),
               SizedBox(
-                height: 25.h,
+                height: 13.h,
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 30.w),
