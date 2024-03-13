@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import '../../api.dart';
 import '../../bottom_nav.dart';
+import '../../shared_preferences_helper.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_text_field.dart';
 import 'login.dart';
@@ -19,7 +21,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  _register(){
+  _register() async{
     if(emailController.text.isEmpty){
       Fluttertoast.showToast(msg: "Please enter valid email id");
     } else if(nameController.text.isEmpty){
@@ -27,7 +29,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
     } else if(passwordController.text.isEmpty){
       Fluttertoast.showToast(msg: "Please enter password");
     } else{
-      Get.offAll(() => BottomNav(currentIndex: 0));
+      if(await api.registerUser(nameController.text, emailController.text, passwordController.text) == "success"){
+        SharedPreferencesHelper.setIsLoggedIn(status: true);
+        Fluttertoast.showToast(msg: "Registered Successfully");
+        Get.offAll(() => BottomNav(currentIndex: 0));
+      } else{
+        Fluttertoast.showToast(msg: "Something went wrong");
+      }
     }
   }
 

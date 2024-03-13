@@ -7,7 +7,7 @@ import 'dart:io';
 
 class Api{
   static List<String> url = [
-    "http://192.168.1.48:5000/",
+    "http://192.168.42.167:5000/",
     "http://localhost:5000/",
     "http://51.20.51.133"
   ];
@@ -37,17 +37,16 @@ class Api{
           'password': password
         };
         if (kDebugMode) {
-          print(registerURL + data.toString());
+          print("$registerURL $data");
         }
         Response response = await dio.post(
             registerURL,
             data: data,
         );
         if (kDebugMode) {
-          print(data);
           print(response);
         }
-        return data['status'];
+        return response.data['status'];
       } catch (e) {
         log(e.toString());
       }
@@ -66,17 +65,16 @@ class Api{
         'password': password
       };
       if (kDebugMode) {
-        print(loginURL + data.toString());
+        print("$loginURL $data");
       }
       Response response = await dio.post(
         loginURL,
         data: data,
       );
       if (kDebugMode) {
-        print(data);
         print(response);
       }
-      return data['status'];
+      return response.data['status'];
     } catch (e) {
       log(e.toString());
     }
