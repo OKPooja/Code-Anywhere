@@ -81,7 +81,7 @@ class _KeyboardState extends State<Keyboard> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    _buildKeyboardRow(['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']),
+                    _buildKeyboardRow(['0','1', '2', '3', '4', '5', '6', '7', '8', '9']),
                     _buildKeyboardRow(['{', '}', '[', ']', '(', ')', '<', '>', '.', ';']),
                     _buildKeyboardRow(['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p']),
                     _buildKeyboardRow(['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', '"']),
@@ -95,8 +95,13 @@ class _KeyboardState extends State<Keyboard> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          buildButton(label: 'Shift', iconData: Icons.arrow_upward),
+                          buildButton(label: '#',),
+                          buildButton(label: '+', ),
+                          buildButton(label: '=', ),
+                          buildButton(label: '-', ),
                           buildButton(label: 'Space', iconData: Icons.space_bar),
+                          buildButton(label: '_', ),
+                          buildButton(label: 'Shift', iconData: Icons.arrow_upward),
                           buildButton(label: 'Backspace', iconData: Icons.backspace),
                         ],
                       ),
