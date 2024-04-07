@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:project/screens/learning_section/topics.dart';
+import 'package:project/screens/problems/problems.dart';
 import 'package:project/utils/colors.dart';
 
-class Edu extends StatefulWidget {
-  const Edu({super.key});
+class ProblemsTopics extends StatelessWidget {
+   ProblemsTopics({Key? key}) : super(key: key);
 
-  @override
-  State<Edu> createState() => _EduState();
-}
-
-class _EduState extends State<Edu> {
-  List<Map<String, String>> dataList = [
+  final List<Map<String, String>> dataList = [
     {
       'title': 'Arrays',
       'description':
@@ -37,7 +32,7 @@ class _EduState extends State<Edu> {
     {
       'title': 'Queues',
       'description':
-      'A queue is a collection that orders its elements in a specific order. Queues typically follow the FIFO (First In First Out) order..',
+      'A queue orders its elements in a specific order. Queues typically follow the FIFO (First In First Out) order..',
     },
     {
       'title': 'Stacks',
@@ -45,7 +40,6 @@ class _EduState extends State<Edu> {
       'A stack is a collection that follows the LIFO (Last In First Out) principle..',
     },
   ];
-
 
   @override
   Widget build(BuildContext context) {
@@ -58,49 +52,52 @@ class _EduState extends State<Edu> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Video \nTutorial',
+                'Problems',
                 style: TextStyle(
                     fontWeight: FontWeight.w700,
                     fontSize: 40.sp,
                     fontFamily: 'PragatiNarrow',
-                    color: Colors.white
-                ),
+                    color: Colors.white),
               ),
               Image.asset(
-                'assets/learn/bg.png',
+                'assets/problems/problem_solving.png',
                 width: 370.w,
                 height: 240.h,
               ),
-              Container(
-                //height: 550,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(16.r)),
+              GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 20.w,
+                  mainAxisSpacing: 20.h,
+                  childAspectRatio: 1.5,
                 ),
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: dataList.length,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: (){
-                        Get.to(() => Topics(category: dataList[index]['title']!,));
-                      },
+                itemCount: dataList.length,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      Get.to(() => Problems(category: dataList[index]['title']!));
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(16.r)),
+                      ),
                       child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 15.w,vertical: 8.h),
+                        padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                const Icon(
-                                  Icons.play_circle,
-                                  size: 55,
-                                  color: Color(0XFF29277A),
+                                CircularProgressIndicator(
+                                  value: 0.1,
+                                  color: AppColors.primary,
+                                  backgroundColor: const Color(0xFFC4C8F8),
+                                  strokeWidth: 8.0,
                                 ),
-                                SizedBox(width: 10.w),
+                                SizedBox(width: 12.h),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -108,14 +105,14 @@ class _EduState extends State<Edu> {
                                       dataList[index]['title']!,
                                       style: TextStyle(
                                         fontWeight: FontWeight.w500,
-                                        fontSize: 36.sp,
+                                        fontSize: 28.sp,
                                         fontFamily: 'PragatiNarrow',
                                         color: Colors.black87,
                                         height: 1.2,
                                       ),
                                     ),
                                     SizedBox(
-                                      width: MediaQuery.of(context).size.width * 0.65,
+                                      width: MediaQuery.of(context).size.width * 0.19,
                                       child: Text(
                                         dataList[index]['description']!,
                                         style: TextStyle(
@@ -125,29 +122,26 @@ class _EduState extends State<Edu> {
                                           color: Color(0XFF8C8888),
                                           height: 1.0,
                                         ),
-                                        maxLines: 2,
+                                        maxLines: 3,
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
                                   ],
                                 )
                               ],
-                            ),
-                            SizedBox(height: 10.h),
-                            if(index != dataList.length - 1)
-                              const Divider(color: Colors.black87, thickness: 1.0)
+                            )
                           ],
                         ),
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  );
+                },
               ),
-              SizedBox(height: 50.h,),
+              SizedBox(height: 50.h),
             ],
           ),
         ),
-      )
+      ),
     );
   }
 }

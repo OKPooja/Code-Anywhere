@@ -1,8 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:project/utils/colors.dart';
 import 'package:semicircle_indicator/semicircle_indicator.dart';
+import '../../check.dart';
 import 'code_mirro.dart';
 
 class Home extends StatefulWidget {
@@ -170,58 +172,63 @@ class _HomeState extends State<Home> {
                   SizedBox(
                     height: 30.h,
                   ),
-                  Stack(
-                    children: [
-                      Image.asset(
-                        'assets/home/card.png',
-                        width: 330.w,
-                      ),
-                      Positioned(
-                        left: 20.w,
-                        top: 15.h,
-                        child: Text(
-                          'Arrays',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 45.sp,
-                              color: Colors.white,
-                              fontFamily: 'PragatiNarrow'),
+                  GestureDetector(
+                    onTap: (){
+                      Get.to(const Keyboard());
+                    },
+                    child: Stack(
+                      children: [
+                        Image.asset(
+                          'assets/home/card.png',
+                          width: 330.w,
                         ),
-                      ),
-                      Positioned(
-                        left: 20.w,
-                        top: 60.h,
-                        child: Text(
-                          'Start learning',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 25.sp,
-                              color: Colors.white,
-                              fontFamily: 'PragatiNarrow'),
-                        ),
-                      ),
-                       Positioned(
-                        right: 20.w,
-                        top: 30.h,
-                        child: const SemicircularIndicator(
-                          radius: 50,
-                          color: Colors.white,
-                          backgroundColor: Color(0XFF12223C),
-                          strokeWidth: 12,
-                          bottomPadding: 0,
-                          progress: 0.36,
+                        Positioned(
+                          left: 20.w,
+                          top: 15.h,
                           child: Text(
-                            '36%',
+                            'Arrays',
                             style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 45.sp,
                                 color: Colors.white,
-                                fontFamily: 'Nunito'
+                                fontFamily: 'PragatiNarrow'),
+                          ),
+                        ),
+                        Positioned(
+                          left: 20.w,
+                          top: 60.h,
+                          child: Text(
+                            'Start learning',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 25.sp,
+                                color: Colors.white,
+                                fontFamily: 'PragatiNarrow'),
+                          ),
+                        ),
+                         Positioned(
+                          right: 20.w,
+                          top: 30.h,
+                          child: const SemicircularIndicator(
+                            radius: 50,
+                            color: Colors.white,
+                            backgroundColor: Color(0XFF12223C),
+                            strokeWidth: 12,
+                            bottomPadding: 0,
+                            progress: 0.36,
+                            child: Text(
+                              '36%',
+                              style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
+                                  fontFamily: 'Nunito'
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                   SizedBox(
                     height: 20.h,

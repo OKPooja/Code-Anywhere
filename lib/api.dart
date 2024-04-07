@@ -7,7 +7,7 @@ import 'dart:io';
 
 class Api{
   static List<String> url = [
-    "http://192.168.42.167:5000/",
+    "http://192.168.95.236:5000/",
     "http://localhost:5000/",
     "http://51.20.51.133"
   ];
