@@ -21,14 +21,14 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   late final File _profileImage;
-  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      GlobalKey<RefreshIndicatorState>();
   late SharedPreferences _prefs;
 
   @override
   void initState() {
     super.initState();
     _initializePrefs();
-
   }
 
   Future<void> _initializePrefs() async {
@@ -75,11 +75,12 @@ class _ProfileState extends State<Profile> {
                   children: [
                     Stack(
                       children: [
-                          const CircleAvatar(
-                            backgroundColor: Colors.transparent,
-                            radius: 60,
-                            backgroundImage: AssetImage('assets/home/dummy_profile.png'),
-                          ),
+                        const CircleAvatar(
+                          backgroundColor: Colors.transparent,
+                          radius: 60,
+                          backgroundImage:
+                              AssetImage('assets/home/dummy_profile.png'),
+                        ),
                         Positioned(
                           bottom: 0,
                           right: 0,
@@ -103,12 +104,14 @@ class _ProfileState extends State<Profile> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Pooja Gawade",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 20.sp,
-                                color: Colors.black,
-                                fontFamily: 'Lato',),),
+                          SharedPreferencesHelper.getUserName(),
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 20.sp,
+                            color: Colors.black,
+                            fontFamily: 'Lato',
+                          ),
+                        ),
                         SizedBox(
                           height: 10.h,
                         ),
@@ -128,13 +131,11 @@ class _ProfileState extends State<Profile> {
                   height: 20.h,
                 ),
                 InkWell(
-                  onTap: () {
-                  },
+                  onTap: () {},
                   child: ProfilePageCards(
                     image: 'assets/profile/Person.png',
                     title: 'Profile Details',
-                    onTap: () {
-                    },
+                    onTap: () {},
                   ),
                 ),
                 SizedBox(
@@ -179,9 +180,9 @@ class _ProfileState extends State<Profile> {
                             ),
                             TextButton(
                               onPressed: () {
-                                SharedPreferencesHelper.setIsLoggedIn(status: false);
-                                _prefs.setBool(
-                                    'isFirstTime', false);
+                                SharedPreferencesHelper.setIsLoggedIn(
+                                    status: false);
+                                _prefs.setBool('isFirstTime', false);
                                 print(_prefs.getBool('isFirstTime'));
                                 Fluttertoast.showToast(
                                     msg: "Logout Successful");
@@ -197,9 +198,7 @@ class _ProfileState extends State<Profile> {
                   child: ProfilePageCards(
                       image: 'assets/profile/logout.png',
                       title: 'Log Out',
-                      onTap: () {
-
-                      }),
+                      onTap: () {}),
                 ),
                 SizedBox(
                   height: 300.h,

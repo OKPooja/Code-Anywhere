@@ -6,70 +6,85 @@ import 'package:project/utils/colors.dart';
 
 class Problems extends StatefulWidget {
   final String category;
-  const Problems({Key? key, required this.category}) : super(key: key);
+  final List<dynamic> problemsList;
+  const Problems({Key? key, required this.category, required this.problemsList})
+      : super(key: key);
 
   @override
   State<Problems> createState() => _ProblemsState();
 }
 
 class _ProblemsState extends State<Problems> {
+  List<dynamic> problemsList = [];
+
   List<Map<String, dynamic>> problemDataList = [
     {
-      'name': 'Largest element in an array',
+      'problem': 'Largest element in an array',
       'isCompleted': true,
       'isBookmarked': false,
     },
     {
-      'name': 'Smallest element in an array',
+      'problem': 'Smallest element in an array',
       'isCompleted': false,
       'isBookmarked': true,
     },
     {
-      'name': 'Merge two sorted arrays',
+      'problem': 'Merge two sorted arrays',
       'isCompleted': true,
       'isBookmarked': true,
     },
     {
-      'name': 'Reverse an array',
+      'problem': 'Reverse an array',
       'isCompleted': true,
       'isBookmarked': false,
     },
     {
-      'name': 'Find the missing number in an array',
+      'problem': 'Find the missing number in an array',
       'isCompleted': false,
       'isBookmarked': false,
     },
     {
-      'name': 'Remove duplicates from a sorted array',
+      'problem': 'Remove duplicates from a sorted array',
       'isCompleted': true,
       'isBookmarked': true,
     },
     {
-      'name': 'Count frequency of elements in an array',
+      'problem': 'Count frequency of elements in an array',
       'isCompleted': false,
       'isBookmarked': false,
     },
     {
-      'name': 'Rotate an array',
+      'problem': 'Rotate an array',
       'isCompleted': false,
       'isBookmarked': true,
     },
     {
-      'name': 'Find maximum sum subarray',
+      'problem': 'Find maximum sum subarray',
       'isCompleted': true,
       'isBookmarked': false,
     },
     {
-      'name': 'Search in a rotated sorted array',
+      'problem': 'Search in a rotated sorted array',
       'isCompleted': false,
       'isBookmarked': true,
     },
     {
-      'name': 'Find common elements in multiple arrays',
+      'problem': 'Find common elements in multiple arrays',
       'isCompleted': true,
       'isBookmarked': false,
     },
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    problemsList = problemDataList;
+    problemsList = widget.problemsList;
+    if(problemsList.isEmpty){
+      problemsList = problemDataList;
+    }
+    print(problemsList);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -90,15 +105,17 @@ class _ProblemsState extends State<Problems> {
         title: Text(
           widget.category,
           style: const TextStyle(
-              color: Colors.white,
-              fontFamily: 'Nunito',
-              fontWeight: FontWeight.w700,
+            color: Colors.white,
+            fontFamily: 'Nunito',
+            fontWeight: FontWeight.w700,
           ),
         ),
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 15.w,),
+          padding: EdgeInsets.symmetric(
+            horizontal: 15.w,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -108,7 +125,9 @@ class _ProblemsState extends State<Problems> {
               ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: problemDataList.length,
+                itemCount:
+                    problemsList.length >= 100 ? 100 : problemsList.length,
+                //itemCount: problemDataList.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Card(
                     color: const Color(0xFFECF7FD),
@@ -125,7 +144,8 @@ class _ProblemsState extends State<Problems> {
                           SizedBox(
                             width: MediaQuery.of(context).size.width * 0.6,
                             child: Text(
-                              problemDataList[index]['name'],
+                              problemsList[index]['problem'],
+                              //problemDataList[index]['problem'],
                               style: TextStyle(
                                 fontWeight: FontWeight.w400,
                                 fontSize: 22.sp,
@@ -137,19 +157,36 @@ class _ProblemsState extends State<Problems> {
                           ),
                           Row(
                             children: [
-                              Icon(
-                                problemDataList[index]['isCompleted']
-                                    ? Icons.check_circle
-                                    : Icons.circle,
-                                color: problemDataList[index]['isCompleted']
-                                    ? Colors.green
-                                    : Colors.transparent,
-                              ),
-                              GestureDetector(
+                              index >= problemDataList.length
+                                  ? const Icon(
+                                      Icons.circle,
+                                      color: Colors.transparent,
+                                    )
+                                  : Icon(
+                                      problemDataList[index]['isCompleted']
+                                          ? Icons.check_circle
+                                          : Icons.circle,
+                                      color: problemDataList[index]
+                                              ['isCompleted']
+                                          ? Colors.green
+                                          : Colors.transparent,
+                                    ),
+                              index >= problemDataList.length
+                              ? GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                  });
+                                },
+                                child: Icon(
+                                  Icons.bookmark,
+                                  color: Colors.black87,
+                                ),
+                              )
+                              : GestureDetector(
                                 onTap: () {
                                   setState(() {
                                     problemDataList[index]['isBookmarked'] =
-                                        !problemDataList[index]['isBookmarked'];
+                                    !problemDataList[index]['isBookmarked'];
                                   });
                                 },
                                 child: Icon(
@@ -160,7 +197,7 @@ class _ProblemsState extends State<Problems> {
                                       ? Colors.black87
                                       : Colors.black87,
                                 ),
-                              ),
+                              )
                             ],
                           )
                         ],

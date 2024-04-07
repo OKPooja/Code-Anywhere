@@ -1,12 +1,26 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:project/screens/learning_section/topics.dart';
 import 'package:project/screens/problems/problems.dart';
 import 'package:project/utils/colors.dart';
+import 'dart:math' as math;
+import '../../api.dart';
 
-class ProblemsTopics extends StatelessWidget {
+class ProblemsTopics extends StatefulWidget {
    ProblemsTopics({Key? key}) : super(key: key);
+
+  @override
+  State<ProblemsTopics> createState() => _ProblemsTopicsState();
+}
+
+class _ProblemsTopicsState extends State<ProblemsTopics> {
+  List<dynamic> arrays = [];
+  List<dynamic> strings = [];
+  List<dynamic> trees = [];
+  List<dynamic> linkedList = [];
+  List<dynamic> sorting = [];
 
   final List<Map<String, String>> dataList = [
     {
@@ -20,19 +34,19 @@ class ProblemsTopics extends StatelessWidget {
       'A string in one line is a sequence of characters enclosed within single or double quotation marks. It can include letters, numbers, symbols, and whitespace characters.',
     },
     {
-      'title': 'Maps',
+      'title': 'Trees',
       'description':
-      'A map is an object that maps keys to values. A map cannot contain duplicate keys..',
+      'A queue orders its elements in a specific order. Queues typically follow the FIFO (First In First Out) order..',
     },
     {
-      'title': 'Sets',
+      'title': 'Linked Lists',
       'description':
       'A set is an unordered collection of unique items. Sets do not allow duplicates..',
     },
     {
-      'title': 'Queues',
+      'title': 'Sorting',
       'description':
-      'A queue orders its elements in a specific order. Queues typically follow the FIFO (First In First Out) order..',
+      'A map is an object that maps keys to values. A map cannot contain duplicate keys..',
     },
     {
       'title': 'Stacks',
@@ -40,6 +54,22 @@ class ProblemsTopics extends StatelessWidget {
       'A stack is a collection that follows the LIFO (Last In First Out) principle..',
     },
   ];
+
+  @override
+  void initState(){
+    super.initState();
+    initializePrefs();
+  }
+
+  initializePrefs()async{
+    print("Inside init prefs");
+    arrays = await api.fetchProblems("arrays");
+    strings = await api.fetchProblems("strings");
+    trees = await api.fetchProblems("trees");
+    linkedList = await api.fetchProblems("linkedList");
+    sorting = await api.fetchProblems("sorting");
+
+    print("Output inside init prefs");}
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +107,19 @@ class ProblemsTopics extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
-                      Get.to(() => Problems(category: dataList[index]['title']!));
+                      List<dynamic> problems = [];
+                      if(dataList[index]['title'] == 'Arrays'){
+                        problems = arrays;
+                      } else if(dataList[index]['title'] == 'Strings'){
+                        problems = strings;
+                      } else if(dataList[index]['title'] == 'Sorting'){
+                        problems = sorting;
+                      } else if(dataList[index]['title'] == 'Linked Lists'){
+                        problems = linkedList;
+                      } else if(dataList[index]['title'] == 'Trees'){
+                        problems = trees;
+                      }
+                      Get.to(() => Problems(category: dataList[index]['title']!, problemsList: problems));
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -92,7 +134,7 @@ class ProblemsTopics extends StatelessWidget {
                             Row(
                               children: [
                                 CircularProgressIndicator(
-                                  value: 0.1,
+                                  value: math.Random().nextDouble(),
                                   color: AppColors.primary,
                                   backgroundColor: const Color(0xFFC4C8F8),
                                   strokeWidth: 8.0,
@@ -101,14 +143,18 @@ class ProblemsTopics extends StatelessWidget {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      dataList[index]['title']!,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 28.sp,
-                                        fontFamily: 'PragatiNarrow',
-                                        color: Colors.black87,
-                                        height: 1.2,
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width * 0.19,
+                                      child: Text(
+                                        dataList[index]['title']!,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 28.sp,
+                                          fontFamily: 'PragatiNarrow',
+                                          color: Colors.black87,
+                                          height: 1.2,
+                                        ),
+                                        overflow: TextOverflow.ellipsis
                                       ),
                                     ),
                                     SizedBox(

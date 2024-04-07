@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:project/utils/colors.dart';
 import 'package:semicircle_indicator/semicircle_indicator.dart';
 import '../../check.dart';
+import '../../shared_preferences_helper.dart';
 import 'code_mirro.dart';
 
 class Home extends StatefulWidget {
@@ -51,7 +52,8 @@ class _HomeState extends State<Home> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Hey User!',
+                        'Hey ${SharedPreferencesHelper.getUserName()}',
+                        //'Hey User!',
                         style: TextStyle(
                             fontWeight: FontWeight.w700,
                             fontSize: 38.sp,

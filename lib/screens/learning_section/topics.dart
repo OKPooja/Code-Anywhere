@@ -45,6 +45,48 @@ class _TopicsState extends State<Topics> {
         'link': 'https://www.youtube.com/watch?v=awQsIcfUb_c'
       }
     ],
+    'Queues': [
+      {
+        'topic': 'Queues in Data structure',
+        'link': 'https://youtu.be/yzj0Ch01Exo?si=A-cXIRLijDdOAlQz'
+      },
+      {
+        'topic': 'Introduction to Queue',
+        'link': 'https://youtu.be/fbonDkYsKj0?si=7-YUV0MqPC2W3zvs'
+      },
+      {
+        'topic': 'Summary Queues',
+        'link': 'https://youtu.be/D6gu-_tmEpQ?si=c_NO_0AVhUU-fHSB'
+      }
+    ],
+    'Sets': [
+      {
+        'topic': 'Sets in Python',
+        'link': 'https://youtu.be/l3kCO8cVA6o?si=JSNCrh_cHqsYV1mp',
+      },
+      {
+        'topic': 'Sets methods',
+        'link': 'https://youtu.be/r3R3h5ly_8g?si=IHe6fYY3zOfCg24O'
+      },
+      {
+        'topic': 'Sets Theory Explanation',
+        'link': 'https://youtu.be/CTg_To0PwI8?si=uoWrd0IMozq8TaJm'
+      }
+    ],
+    'Maps': [
+      {
+        'topic': 'Maps function explained',
+        'link': 'https://youtu.be/8q2vICb89ys?si=7sQL_8GWnV6iwxoA',
+      },
+      {
+        'topic': 'What are Maps?',
+        'link': 'https://youtu.be/UPME8r3SuhA?si=gOWFxiOOqDHspBuw'
+      },
+      {
+        'topic': 'Overview to Maps',
+        'link': 'https://youtu.be/LWCN6I1vZoA?si=ojWBMMFqJyohL3XS'
+      }
+    ],
   };
 
 
@@ -57,7 +99,7 @@ class _TopicsState extends State<Topics> {
       appBar: AppBar(
         backgroundColor: AppColors.primary,
         leading: IconButton(
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back_ios_new,
             color: Colors.white,
             size: 18,
@@ -67,8 +109,8 @@ class _TopicsState extends State<Topics> {
           },
         ),
         title: Text(
-            '${widget.category}',
-            style: TextStyle(
+            widget.category,
+            style: const TextStyle(
               color: Colors.white,
               fontFamily: 'Nunito'
             ),
