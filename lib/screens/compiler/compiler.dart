@@ -64,7 +64,14 @@ class _CodeInputScreenState extends State<CodeInputScreen> {
 
   @override
   Widget build(BuildContext context) {
-    const source = ' ';
+    var source = '';
+    if (_selectedLanguage == 'C++') {
+      source = '#include<iostream> \nusing namespace std; \n\nint main(){ \n cout << "hello"; \n return 0;\n}';
+    } else if (_selectedLanguage == 'Java') {
+      source = 'import java.util.*;\npublic class Main {\n  public static void main(String[] args) {\n    // Your code here\n    System.out.println("Hello, World!");\n  }\n}';
+    } else if (_selectedLanguage == 'Python') {
+      source = '';
+    }
     _codeController = CodeController(
       text: source,
       language: cpp,
