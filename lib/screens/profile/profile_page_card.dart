@@ -41,10 +41,10 @@ class ProfilePageCards extends StatelessWidget {
                 Text(
                   title,
                   style: TextStyle(
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w600,
                       fontSize: 16.sp,
                       color: Colors.black,
-                      fontFamily: 'PragatiNarrow'
+                      fontFamily: 'Nunito'
                   ),
                 ),
               ],
