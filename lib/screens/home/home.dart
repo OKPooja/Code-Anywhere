@@ -1,8 +1,14 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:project/utils/colors.dart';
 import 'package:semicircle_indicator/semicircle_indicator.dart';
+import '../../api.dart';
+import '../../check.dart';
+import '../../shared_preferences_helper.dart';
+import '../problems/problems.dart';
 import 'code_mirro.dart';
 
 class Home extends StatefulWidget {
@@ -13,6 +19,11 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  List<dynamic> strings = [];
+  List<dynamic> trees = [];
+  List<dynamic> arrays = [];
+
+
   final List<Category> categories = [
     Category(
         title: 'Data Structures and \nAlgorithms',
@@ -22,6 +33,21 @@ class _HomeState extends State<Home> {
         title: 'Data Structures and \nAlgorithms',
         image: 'assets/home/dsa.png',),
   ];
+
+  @override
+  void initState(){
+    super.initState();
+    initializePrefs();
+  }
+
+  initializePrefs()async{
+    print("Inside init prefs");
+    arrays = await api.fetchProblems("arrays");
+    strings = await api.fetchProblems("strings");
+    trees = await api.fetchProblems("trees");
+
+    print("Output inside init prefs");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +75,8 @@ class _HomeState extends State<Home> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Hey User!',
+                        'Hey ${SharedPreferencesHelper.getUserName()}',
+                        //'Hey User!',
                         style: TextStyle(
                             fontWeight: FontWeight.w700,
                             fontSize: 38.sp,
@@ -103,7 +130,7 @@ class _HomeState extends State<Home> {
                 height: 250.h,
                 child: GestureDetector(
                   onTap: (){
-                    Get.to(() => const CodeMirrorView());
+                    Get.to(const Keyboard());
                   },
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
@@ -170,171 +197,187 @@ class _HomeState extends State<Home> {
                   SizedBox(
                     height: 30.h,
                   ),
-                  Stack(
-                    children: [
-                      Image.asset(
-                        'assets/home/card.png',
-                        width: 330.w,
-                      ),
-                      Positioned(
-                        left: 20.w,
-                        top: 15.h,
-                        child: Text(
-                          'Arrays',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 45.sp,
-                              color: Colors.white,
-                              fontFamily: 'PragatiNarrow'),
-                        ),
-                      ),
-                      Positioned(
-                        left: 20.w,
-                        top: 60.h,
-                        child: Text(
-                          'Start learning',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 25.sp,
-                              color: Colors.white,
-                              fontFamily: 'PragatiNarrow'),
-                        ),
-                      ),
-                       Positioned(
-                        right: 20.w,
-                        top: 30.h,
-                        child: const SemicircularIndicator(
-                          radius: 50,
-                          color: Colors.white,
-                          backgroundColor: Color(0XFF12223C),
-                          strokeWidth: 12,
-                          bottomPadding: 0,
-                          progress: 0.36,
-                          child: Text(
-                            '36%',
-                            style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white,
-                                fontFamily: 'Nunito'
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  Stack(
-                    children: [
-                      Image.asset(
-                        'assets/home/card.png',
-                        width: 330.w,
-                      ),
-                      Positioned(
-                        left: 20.w,
-                        top: 15.h,
-                        child: Text(
-                          'Strings',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 45.sp,
-                              color: Colors.white,
-                              fontFamily: 'PragatiNarrow'),
-                        ),
-                      ),
-                      Positioned(
-                        left: 20.w,
-                        top: 60.h,
-                        child: Text(
-                          'Start learning',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 25.sp,
-                              color: Colors.white,
-                              fontFamily: 'PragatiNarrow'),
-                        ),
-                      ),
-                      Positioned(
-                        right: 20.w,
-                        top: 30.h,
-                        child: const SemicircularIndicator(
-                          radius: 50,
-                          color: Colors.white,
-                          backgroundColor: Color(0XFF12223C),
-                          strokeWidth: 12,
-                          bottomPadding: 0,
-                          progress: 0.70,
-                          child: Text(
-                            '70%',
-                            style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white,
-                                fontFamily: 'Nunito'
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  Stack(
-                    children: [
-                      Image.asset(
-                        'assets/home/card.png',
-                        width: 330.w,
-                      ),
-                      Positioned(
-                        left: 20.w,
-                        top: 15.h,
-                        child: Text(
-                          'Trees',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 45.sp,
-                              color: Colors.white,
-                              fontFamily: 'PragatiNarrow'),
-                        ),
-                      ),
-                      Positioned(
-                        left: 20.w,
-                        top: 60.h,
-                        child: Text(
-                          'Start learning',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 25.sp,
-                              color: Colors.white,
-                              fontFamily: 'PragatiNarrow'),
-                        ),
-                      ),
-                      Positioned(
-                        right: 20.w,
-                        top: 30.h,
-                        child: const SemicircularIndicator(
-                          radius: 50,
-                          color: Colors.white,
-                          backgroundColor: Color(0XFF12223C),
-                          strokeWidth: 12,
-                          bottomPadding: 0,
-                          progress: 0.50,
-                          child: Text(
-                            '50%',
-                            style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white,
-                                fontFamily: 'Nunito'
-                            ),
-                          ),
-                        ),
-                      ),
+                  GestureDetector(
+                    onTap: (){
 
-                    ],
+                      Get.to(() => Problems(category: 'Arrays', problemsList: arrays));
+                    },
+                    child: Stack(
+                      children: [
+                        Image.asset(
+                          'assets/home/card.png',
+                          width: 330.w,
+                        ),
+                        Positioned(
+                          left: 20.w,
+                          top: 15.h,
+                          child: Text(
+                            'Arrays',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 45.sp,
+                                color: Colors.white,
+                                fontFamily: 'PragatiNarrow'),
+                          ),
+                        ),
+                        Positioned(
+                          left: 20.w,
+                          top: 60.h,
+                          child: Text(
+                            'Start learning',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 25.sp,
+                                color: Colors.white,
+                                fontFamily: 'PragatiNarrow'),
+                          ),
+                        ),
+                         Positioned(
+                          right: 20.w,
+                          top: 30.h,
+                          child: const SemicircularIndicator(
+                            radius: 50,
+                            color: Colors.white,
+                            backgroundColor: Color(0XFF12223C),
+                            strokeWidth: 12,
+                            bottomPadding: 0,
+                            progress: 0.10,
+                            child: Text(
+                              '10%',
+                              style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
+                                  fontFamily: 'Nunito'
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20.h,
+                  ),
+                  GestureDetector(
+                    onTap: (){
+                      Get.to(() => Problems(category: 'Strings', problemsList: strings));
+                    },
+                    child: Stack(
+                      children: [
+                        Image.asset(
+                          'assets/home/card.png',
+                          width: 330.w,
+                        ),
+                        Positioned(
+                          left: 20.w,
+                          top: 15.h,
+                          child: Text(
+                            'Strings',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 45.sp,
+                                color: Colors.white,
+                                fontFamily: 'PragatiNarrow'),
+                          ),
+                        ),
+                        Positioned(
+                          left: 20.w,
+                          top: 60.h,
+                          child: Text(
+                            'Start learning',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 25.sp,
+                                color: Colors.white,
+                                fontFamily: 'PragatiNarrow'),
+                          ),
+                        ),
+                        Positioned(
+                          right: 20.w,
+                          top: 30.h,
+                          child: const SemicircularIndicator(
+                            radius: 50,
+                            color: Colors.white,
+                            backgroundColor: Color(0XFF12223C),
+                            strokeWidth: 12,
+                            bottomPadding: 0,
+                            progress: 0.3,
+                            child: Text(
+                              '30%',
+                              style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
+                                  fontFamily: 'Nunito'
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20.h,
+                  ),
+                  GestureDetector(
+                    onTap: (){
+                      Get.to(() => Problems(category: 'Trees', problemsList: trees));
+                    },
+                    child: Stack(
+                      children: [
+                        Image.asset(
+                          'assets/home/card.png',
+                          width: 330.w,
+                        ),
+                        Positioned(
+                          left: 20.w,
+                          top: 15.h,
+                          child: Text(
+                            'Trees',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 45.sp,
+                                color: Colors.white,
+                                fontFamily: 'PragatiNarrow'),
+                          ),
+                        ),
+                        Positioned(
+                          left: 20.w,
+                          top: 60.h,
+                          child: Text(
+                            'Start learning',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 25.sp,
+                                color: Colors.white,
+                                fontFamily: 'PragatiNarrow'),
+                          ),
+                        ),
+                        Positioned(
+                          right: 20.w,
+                          top: 30.h,
+                          child: const SemicircularIndicator(
+                            radius: 50,
+                            color: Colors.white,
+                            backgroundColor: Color(0XFF12223C),
+                            strokeWidth: 12,
+                            bottomPadding: 0,
+                            progress: 0.40,
+                            child: Text(
+                              '40%',
+                              style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
+                                  fontFamily: 'Nunito'
+                              ),
+                            ),
+                          ),
+                        ),
+
+                      ],
+                    ),
                   ),
                   SizedBox(
                     height: 20.h,

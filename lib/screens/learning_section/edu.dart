@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:project/screens/learning_section/topics.dart';
 import 'package:project/utils/colors.dart';
 
 class Edu extends StatefulWidget {
@@ -17,9 +20,9 @@ class _EduState extends State<Edu> {
       'An array is a data structure with elements of the same memory size..',
     },
     {
-      'title': 'Lists',
+      'title': 'Strings',
       'description':
-      'A list is an ordered collection that allows duplicates and nulls..',
+      'A string in one line is a sequence of characters enclosed within single or double quotation marks. It can include letters, numbers, symbols, and whitespace characters.',
     },
     {
       'title': 'Maps',
@@ -68,33 +71,6 @@ class _EduState extends State<Edu> {
                 width: 370.w,
                 height: 240.h,
               ),
-              // Padding(
-              //   padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-              //   child: Row(
-              //     crossAxisAlignment: CrossAxisAlignment.start,
-              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //     children: [
-              //       // Padding(
-              //       //   padding: EdgeInsets.only(top: 10.h),
-              //       //   child: const Icon(
-              //       //     Icons.arrow_back_ios,
-              //       //     color: Colors.white,
-              //       //     size: 35,
-              //       //   ),
-              //       // ),
-              //       Text(
-              //         'Video \nTutorial',
-              //         style: TextStyle(
-              //           fontWeight: FontWeight.w700,
-              //           fontSize: 36.sp,
-              //           fontFamily: 'PragatiNarrow',
-              //           color: Colors.white
-              //         ),
-              //       )
-              //     ],
-              //   ),
-              // ),
-
               Container(
                 //height: 550,
                 width: double.infinity,
@@ -107,56 +83,61 @@ class _EduState extends State<Edu> {
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: dataList.length,
                   itemBuilder: (context, index) {
-                    return Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 15.w,vertical: 8.h),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              const Icon(
-                                Icons.play_circle,
-                                size: 55,
-                                color: Color(0XFF29277A),
-                              ),
-                              SizedBox(width: 10.w),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    dataList[index]['title']!,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 36.sp,
-                                      fontFamily: 'PragatiNarrow',
-                                      color: Colors.black87,
-                                      height: 1.2,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: MediaQuery.of(context).size.width * 0.65,
-                                    child: Text(
-                                      dataList[index]['description']!,
+                    return GestureDetector(
+                      onTap: (){
+                        Get.to(() => Topics(category: dataList[index]['title']!,));
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 15.w,vertical: 8.h),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                const Icon(
+                                  Icons.play_circle,
+                                  size: 55,
+                                  color: Color(0XFF29277A),
+                                ),
+                                SizedBox(width: 10.w),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      dataList[index]['title']!,
                                       style: TextStyle(
-                                        fontWeight: FontWeight.w100,
-                                        fontSize: 15.sp,
-                                        fontFamily: 'Nunito',
-                                        color: Color(0XFF8C8888),
-                                        height: 1.0,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 36.sp,
+                                        fontFamily: 'PragatiNarrow',
+                                        color: Colors.black87,
+                                        height: 1.2,
                                       ),
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
                                     ),
-                                  ),
-                                ],
-                              )
-                            ],
-                          ),
-                          SizedBox(height: 10.h),
-                          if(index != dataList.length - 1)
-                            const Divider(color: Colors.black87, thickness: 1.0)
-                        ],
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width * 0.65,
+                                      child: Text(
+                                        dataList[index]['description']!,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w100,
+                                          fontSize: 15.sp,
+                                          fontFamily: 'Nunito',
+                                          color: Color(0XFF8C8888),
+                                          height: 1.0,
+                                        ),
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                            SizedBox(height: 10.h),
+                            if(index != dataList.length - 1)
+                              const Divider(color: Colors.black87, thickness: 1.0)
+                          ],
+                        ),
                       ),
                     );
                   },

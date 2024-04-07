@@ -26,15 +26,16 @@ class _LoginScreenState extends State<LoginScreen> {
     } else if(passwordController.text.isEmpty){
       Fluttertoast.showToast(msg: "Please enter password");
     } else{
-      // if(await api.loginUser(emailController.text, passwordController.text) == "success"){
-      //   SharedPreferencesHelper.setIsLoggedIn(status: true);
-      //   Get.offAll(() => BottomNav(currentIndex: 0));
-      // } else{
-      //   Fluttertoast.showToast(msg: "Something went wrong");
-      // }
+      if(await api.loginUser(emailController.text, passwordController.text) == "success"){
+        SharedPreferencesHelper.setIsLoggedIn(status: true);
+        Get.offAll(() => BottomNav(currentIndex: 0));
+        Fluttertoast.showToast(msg: "Login Successfully");
+      } else{
+        Fluttertoast.showToast(msg: "Something went wrong");
+      }
     }
-    Get.offAll(() => BottomNav(currentIndex: 0));
-    SharedPreferencesHelper.setIsLoggedIn(status: true);
+    // Get.offAll(() => BottomNav(currentIndex: 0));
+    // SharedPreferencesHelper.setIsLoggedIn(status: true);
   }
 
   @override

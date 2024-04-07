@@ -5,11 +5,14 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:io';
 
+import 'package:project/shared_preferences_helper.dart';
+
 class Api{
   static List<String> url = [
-    "http://192.168.1.48:5000/",
-    "http://localhost:5000/",
-    "http://51.20.51.133"
+    "http://192.168.95.236:5000/",
+    "http://192.168.95.236:8000/",
+    //"http://localhost:5000/",
+    "http://16.171.31.213/"
   ];
   static int index = 0;
   Dio dio = Dio();
@@ -19,7 +22,10 @@ class Api{
   String loginURL = "${url[index]}login";
 
   //Compiler
-  String compilerURL = "${url[2]}/run-code";
+  String compilerURL = "${url[2]}run-code";
+
+  //Fetch Problems
+  String fetchProblemsURL = "${url[1]}problems";
 
 
   Future<dynamic> registerUser(
@@ -37,17 +43,16 @@ class Api{
           'password': password
         };
         if (kDebugMode) {
-          print(registerURL + data.toString());
+          print("$registerURL $data");
         }
         Response response = await dio.post(
             registerURL,
             data: data,
         );
         if (kDebugMode) {
-          print(data);
           print(response);
         }
-        return data['status'];
+        return response.data['status'];
       } catch (e) {
         log(e.toString());
       }
@@ -66,17 +71,19 @@ class Api{
         'password': password
       };
       if (kDebugMode) {
-        print(loginURL + data.toString());
+        print("$loginURL $data");
       }
       Response response = await dio.post(
         loginURL,
         data: data,
       );
       if (kDebugMode) {
-        print(data);
         print(response);
       }
-      return data['status'];
+      SharedPreferencesHelper.setUserName(userName: response.data['data']['name']);
+      print("Username:");
+      print(SharedPreferencesHelper.getUserName());
+      return response.data['status'];
     } catch (e) {
       log(e.toString());
     }
@@ -114,6 +121,32 @@ class Api{
         print("Output: $output");
       }
       return responseData["output"];
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+  Future<dynamic> fetchProblems(
+      String collectionName,
+      ) async {
+    try {
+      if (kDebugMode) {
+        print("Inside fetch problems");
+      }
+      dynamic data = {
+        'collectionName': collectionName,
+      };
+      if (kDebugMode) {
+        print("$fetchProblemsURL $data");
+      }
+      Response response = await dio.get(
+        fetchProblemsURL,
+        queryParameters: data,
+      );
+      // if (kDebugMode) {
+      //   print(response);
+      // }
+
+      return response.data;
     } catch (e) {
       log(e.toString());
     }
