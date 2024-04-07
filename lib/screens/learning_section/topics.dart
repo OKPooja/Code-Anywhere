@@ -33,16 +33,30 @@ class _TopicsState extends State<Topics> {
     ],
     'Strings': [
       {
-        'topic': 'String Basics',
-        'link': 'https://www.youtube.com/watch?v=ci9Ll2mLrFk'
+        'topic': 'How to use strings in python',
+        'link': 'https://youtu.be/Ctqi5Y4X-jA?si=JDj5IqGH9UDnpBtf'
       },
       {
-        'topic': 'String Manipulation',
-        'link': 'https://www.youtube.com/watch?v=i5jwOr4igqM'
+        'topic': 'Intro to strings',
+        'link': 'https://youtu.be/3A3TFVDrLCA?si=5d4xRzRGjudgIYe-'
       },
       {
-        'topic': 'String Formatting',
-        'link': 'https://www.youtube.com/watch?v=awQsIcfUb_c'
+        'topic': 'String methods in Python',
+        'link': 'https://youtu.be/0INvoK_T0cE?si=SvVm8PsriO91oavv'
+      }
+    ],
+    'Stacks': [
+      {
+        'topic': 'Learn stacks',
+        'link': 'https://youtu.be/KInG04mAjO0?si=yUDj92oG2JOD3OFw'
+      },
+      {
+        'topic': 'Stack data structure for JAVA',
+        'link': 'https://youtu.be/7m1DMYAbdiY?si=3zlXiAtqMln2R2cB'
+      },
+      {
+        'topic': 'Introduction to Stacks',
+        'link': 'https://youtu.be/I37kGX-nZEI?si=BmSEbZZsdqPmMXqW'
       }
     ],
     'Queues': [

@@ -69,7 +69,8 @@ class _ProblemsTopicsState extends State<ProblemsTopics> {
     linkedList = await api.fetchProblems("linkedList");
     sorting = await api.fetchProblems("sorting");
 
-    print("Output inside init prefs");}
+    print("Output inside init prefs");
+  }
 
   @override
   Widget build(BuildContext context) {
