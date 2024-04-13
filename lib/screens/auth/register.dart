@@ -7,6 +7,7 @@ import '../../bottom_nav.dart';
 import '../../shared_preferences_helper.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_text_field.dart';
+import '../../widgets/custom_toast.dart';
 import 'login.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -23,18 +24,38 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   _register() async{
     if(emailController.text.isEmpty){
-      Fluttertoast.showToast(msg: "Please enter valid email id");
+      showCustomToast(
+          context: context,
+          message: 'Please enter valid email id',
+          primaryColor: Colors.redAccent
+      );
     } else if(nameController.text.isEmpty){
-      Fluttertoast.showToast(msg: "Please enter your name");
+      showCustomToast(
+          context: context,
+          message: 'Please enter Name',
+          primaryColor: Colors.redAccent
+      );
     } else if(passwordController.text.isEmpty){
-      Fluttertoast.showToast(msg: "Please enter password");
+      showCustomToast(
+          context: context,
+          message: 'Please enter password',
+          primaryColor: Colors.redAccent
+      );
     } else{
       if(await api.registerUser(nameController.text, emailController.text, passwordController.text) == "success"){
         SharedPreferencesHelper.setIsLoggedIn(status: true);
-        Fluttertoast.showToast(msg: "Registered Successfully");
+        showCustomToast(
+          context: context,
+          message: 'Registered Successfully',
+        );
+        //Fluttertoast.showToast(msg: "Registered Successfully");
         Get.offAll(() => BottomNav(currentIndex: 0));
       } else{
-        Fluttertoast.showToast(msg: "Something went wrong");
+        showCustomToast(
+            context: context,
+            message: 'Something went wrong',
+            primaryColor: Colors.redAccent
+        );
       }
     }
   }

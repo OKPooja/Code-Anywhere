@@ -15,6 +15,7 @@ import 'package:toastification/toastification.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../api.dart';
 import '../../utils/colors.dart';
+import '../../widgets/custom_toast.dart';
 
 class CodeInputScreen extends StatefulWidget {
   const CodeInputScreen({Key? key}) : super(key: key);
@@ -122,17 +123,11 @@ class _CodeInputScreenState extends State<CodeInputScreen> {
           f = File("$path/code.java");
         }
         await f.writeAsString(_codeController!.text);
-        print("File saved successfully: ${f.path}");
-        toastification.show(
+        showCustomToast(
           context: context,
-          title: const Text('File saved successfully'),
-          autoCloseDuration: const Duration(seconds: 5),
-          alignment: Alignment.bottomCenter,
-          primaryColor: Colors.green,
-          backgroundColor: Colors.white,
-          foregroundColor: Colors.black,
-          showProgressBar: false,
+          message: 'File saved successfully',
         );
+
       } catch (e) {
         print("Error writing file: $e");
       }

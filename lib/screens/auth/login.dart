@@ -8,6 +8,7 @@ import 'package:project/shared_preferences_helper.dart';
 import '../../api.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_text_field.dart';
+import '../../widgets/custom_toast.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -22,16 +23,35 @@ class _LoginScreenState extends State<LoginScreen> {
 
   _login() async{
     if(emailController.text.isEmpty){
-      Fluttertoast.showToast(msg: "Please enter valid email id");
+      showCustomToast(
+        context: context,
+        message: 'Please enter valid email id',
+        primaryColor: Colors.redAccent
+      );
+      //Fluttertoast.showToast(msg: "Please enter valid email id");
     } else if(passwordController.text.isEmpty){
-      Fluttertoast.showToast(msg: "Please enter password");
+      showCustomToast(
+        context: context,
+        message: 'Please enter password',
+        primaryColor: Colors.redAccent
+      );
+      //Fluttertoast.showToast(msg: "Please enter password");
     } else{
       if(await api.loginUser(emailController.text, passwordController.text) == "success"){
         SharedPreferencesHelper.setIsLoggedIn(status: true);
         Get.offAll(() => BottomNav(currentIndex: 0));
-        Fluttertoast.showToast(msg: "Login Successfully");
+        showCustomToast(
+          context: context,
+          message: 'Login Successfully',
+        );
+        //Fluttertoast.showToast(msg: "Login Successfully");
       } else{
-        Fluttertoast.showToast(msg: "Something went wrong");
+        showCustomToast(
+          context: context,
+          message: 'Something went wrong',
+          primaryColor: Colors.redAccent
+        );
+        //Fluttertoast.showToast(msg: "Something went wrong");
       }
     }
     // Get.offAll(() => BottomNav(currentIndex: 0));
