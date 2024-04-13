@@ -10,6 +10,7 @@ import 'package:project/utils/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../shared_preferences_helper.dart';
+import '../../widgets/custom_toast.dart';
 import '../auth/login.dart';
 
 class Profile extends StatefulWidget {
@@ -184,8 +185,10 @@ class _ProfileState extends State<Profile> {
                                     status: false);
                                 _prefs.setBool('isFirstTime', false);
                                 print(_prefs.getBool('isFirstTime'));
-                                Fluttertoast.showToast(
-                                    msg: "Logout Successful");
+                                showCustomToast(
+                                  context: context,
+                                  message: 'Logout Successful',
+                                );
                                 Get.offAll(() => const LoginScreen());
                               },
                               child: const Text("Yes"),

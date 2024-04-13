@@ -9,8 +9,8 @@ import 'package:project/shared_preferences_helper.dart';
 
 class Api{
   static List<String> url = [
-    "http://192.168.95.236:5000/",
-    "http://192.168.95.236:8000/",
+    "http://192.168.222.168:5000/",
+    "http://192.168.222.168:8000/",
     //"http://localhost:5000/",
     "http://16.171.31.213/"
   ];
