@@ -62,9 +62,9 @@ class _CodeInputScreenState extends State<CodeInputScreen> {
       enterBottomSheetDuration: const Duration(milliseconds: 300),
     );
   }
-  
+
   @override
-  void initState(){
+  void initState() {
     _codeController?.addListener(() {});
     super.initState();
   }
@@ -87,6 +87,7 @@ class _CodeInputScreenState extends State<CodeInputScreen> {
     }
     return directory?.path;
   }
+
   Future<void> requestStoragePermission() async {
     PermissionStatus status = await Permission.manageExternalStorage.request();
 
@@ -114,20 +115,22 @@ class _CodeInputScreenState extends State<CodeInputScreen> {
     if (path != null) {
       print("Directory: $path");
       try {
-        File f;
-        if (_selectedLanguage == "C++") {
-          f = File("$path/code.cpp");
-        } else if (_selectedLanguage == "Python") {
-          f = File("$path/code.py");
-        } else {
-          f = File("$path/code.java");
+        String? fileName = await _promptFileName(context);
+        if(fileName!.isNotEmpty){
+          File f;
+          if (_selectedLanguage == "C++") {
+            f = File("$path/$fileName.cpp");
+          } else if (_selectedLanguage == "Python") {
+            f = File("$path/$fileName.py");
+          } else {
+            f = File("$path/$fileName.java");
+          }
+          await f.writeAsString(_codeController!.text);
+          showCustomToast(
+            context: context,
+            message: 'File saved successfully',
+          );
         }
-        await f.writeAsString(_codeController!.text);
-        showCustomToast(
-          context: context,
-          message: 'File saved successfully',
-        );
-
       } catch (e) {
         print("Error writing file: $e");
       }
@@ -136,11 +139,78 @@ class _CodeInputScreenState extends State<CodeInputScreen> {
     }
   }
 
-  _share() async{
+  Future<String?> _promptFileName(BuildContext context) async {
+    TextEditingController fileNameController = TextEditingController();
+    return showDialog<String?>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(5.0),
+          ),
+          title: Text(
+            'Enter File Name',
+            style: TextStyle(
+                fontWeight: FontWeight.w700,
+                fontSize: 20.sp,
+                color: Colors.black,
+                fontFamily: 'Nunito'),
+          ),
+          content: TextField(
+            controller: fileNameController,
+            decoration: InputDecoration(
+              hintText: 'File Name',
+              hintStyle: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 16.sp,
+                  color: Colors.grey,
+                  fontFamily: 'Nunito',
+              ),
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.black),
+              ),
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context, fileNameController.text.trim());
+              },
+              child: Text(
+                'Save',
+                style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 18.sp,
+                    color: Colors.black,
+                    fontFamily: 'Nunito'),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text(
+                'Cancel',
+                style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 18.sp,
+                    color: Colors.black,
+                    fontFamily: 'Nunito',
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  _share() async {
     if (kDebugMode) {
       print(_codeController!.text);
     }
-    if(_codeController!.text.isNotEmpty){
+    if (_codeController!.text.isNotEmpty) {
       await Share.share(_codeController!.text);
     }
   }
@@ -200,12 +270,14 @@ class _CodeInputScreenState extends State<CodeInputScreen> {
               _download();
             },
             child: const Icon(
-              Icons.file_download_outlined ,
+              Icons.file_download_outlined,
               color: Colors.white,
               size: 28,
             ),
           ),
-          SizedBox(width: 16.w,),
+          SizedBox(
+            width: 16.w,
+          ),
           GestureDetector(
             onTap: () {
               _share();
@@ -286,24 +358,25 @@ class _CodeInputScreenState extends State<CodeInputScreen> {
       ),
     );
   }
+
   void _addClosingBracket() {
-      setState(() async {
-        await showDialog<void>(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: const Text('That is correct!'),
-                content: const Text('13 is the right answer.'),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Text('OK'),
-                  ),
-                ],
-              );
-            });
-      });
-    }
+    setState(() async {
+      await showDialog<void>(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('That is correct!'),
+              content: const Text('13 is the right answer.'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
+            );
+          });
+    });
+  }
 }

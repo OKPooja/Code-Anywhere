@@ -159,7 +159,8 @@ class _HomeState extends State<Home> {
                                   fontWeight: FontWeight.w700,
                                   fontSize: 18.sp,
                                   color: Colors.white,
-                                  fontFamily: 'PragatiNarrow'),
+                                  fontFamily: 'PragatiNarrow'
+                              ),
                               textAlign: TextAlign.center,
                             ),
                           ],
