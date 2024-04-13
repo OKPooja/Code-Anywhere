@@ -6,8 +6,8 @@ import 'package:get/get.dart';
 import 'package:project/utils/colors.dart';
 import 'package:semicircle_indicator/semicircle_indicator.dart';
 import '../../api.dart';
-import '../../check.dart';
 import '../../shared_preferences_helper.dart';
+import '../../widgets/custom_keyboard.dart';
 import '../problems/problems.dart';
 
 class Home extends StatefulWidget {
