@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:project/screens/profile/personal_details.dart';
 import 'package:project/screens/profile/profile_page_card.dart';
 import 'package:project/utils/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -75,30 +76,12 @@ class _ProfileState extends State<Profile> {
                 ),
                 Row(
                   children: [
-                    Stack(
-                      children: [
-                        const CircleAvatar(
+                      const CircleAvatar(
                           backgroundColor: Colors.transparent,
                           radius: 60,
                           backgroundImage:
                               AssetImage('assets/home/dummy_profile.png'),
-                        ),
-                        Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: GestureDetector(
-                            onTap: () {
-                              _uploadImage();
-                            },
-                            child: Image.asset(
-                              'assets/profile/edit_profile.png',
-                              width: 40.w,
-                              height: 40.h,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
+                      ),
                     SizedBox(
                       width: 30.w,
                     ),
@@ -134,10 +117,12 @@ class _ProfileState extends State<Profile> {
                 ),
                 InkWell(
                   splashColor: Colors.transparent,
-                  onTap: () {},
+                  onTap: () {
+                    Get.to(() => PersonalDetails());
+                  },
                   child: ProfilePageCards(
                     image: 'assets/profile/Person.png',
-                    title: 'Profile Details',
+                    title: 'Personal Details',
                     onTap: () {},
                   ),
                 ),
@@ -187,7 +172,10 @@ class _ProfileState extends State<Profile> {
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          backgroundColor: Colors.white,
+                          backgroundColor: Colors.white70,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
                           title: Text("Confirm Logout"),
                           content: Text("Are you sure you want to log out?"),
                           actions: [
