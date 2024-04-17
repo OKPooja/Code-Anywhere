@@ -9,6 +9,7 @@ import '../../api.dart';
 import '../../shared_preferences_helper.dart';
 import '../../widgets/custom_keyboard.dart';
 import '../problems/problems.dart';
+import '../profile/getAllFiles.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -92,10 +93,14 @@ class _HomeState extends State<Home> {
                       ),
                     ],
                   ),
-                  Image.asset(
-                    'assets/home/dummy_profile.png',
-                    width: 80.w,
-                    height: 90.h,
+                  GestureDetector(
+                    onTap: (){
+                    },
+                    child: Image.asset(
+                      'assets/home/dummy_profile.png',
+                      width: 80.w,
+                      height: 90.h,
+                    ),
                   )
                 ],
               ),
@@ -115,7 +120,8 @@ class _HomeState extends State<Home> {
                     fontWeight: FontWeight.w700,
                     fontSize: 38.sp,
                     color: Colors.white,
-                    fontFamily: 'PragatiNarrow'),
+                    fontFamily: 'PragatiNarrow',
+                ),
               ),
             ),
             SizedBox(
@@ -129,7 +135,8 @@ class _HomeState extends State<Home> {
                 height: 250.h,
                 child: GestureDetector(
                   onTap: (){
-                    Get.to(const Keyboard());
+                    // Get.to(const Keyboard());
+                     Get.to(GetAllFiles());
                   },
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
