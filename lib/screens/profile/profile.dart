@@ -12,6 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../shared_preferences_helper.dart';
 import '../../widgets/custom_toast.dart';
 import '../auth/login.dart';
+import 'getAllFiles.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -132,11 +133,28 @@ class _ProfileState extends State<Profile> {
                   height: 20.h,
                 ),
                 InkWell(
+                  splashColor: Colors.transparent,
                   onTap: () {},
                   child: ProfilePageCards(
                     image: 'assets/profile/Person.png',
                     title: 'Profile Details',
                     onTap: () {},
+                  ),
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                InkWell(
+                  splashColor: Colors.transparent,
+                  onTap: (){
+                    Get.to(() => const GetAllFiles());
+                  },
+                  child: ProfilePageCards(
+                      image: 'assets/profile/files.png',
+                      title: 'Files',
+                      onTap: () {
+                        Get.to(() => const GetAllFiles());
+                      },
                   ),
                 ),
                 SizedBox(
