@@ -11,7 +11,6 @@ import 'package:highlight/languages/cpp.dart';
 import 'package:highlight/languages/java.dart';
 import 'package:project/screens/compiler/syntax_highlight.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:toastification/toastification.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../api.dart';
 import '../../utils/colors.dart';
@@ -28,6 +27,7 @@ class _CodeInputScreenState extends State<CodeInputScreen> {
   CodeController? _codeController;
   //Map<String, TextStyle>? theme = monokaiSublimeTheme;
   String _selectedLanguage = 'C++';
+  TextEditingController inputTextController = TextEditingController();
 
   void _showOutputBottomSheet(String output) {
     Get.bottomSheet(
@@ -215,6 +215,93 @@ class _CodeInputScreenState extends State<CodeInputScreen> {
     }
   }
 
+  Future<String?> _showInputContainer() {
+    return showDialog<String?>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(5.0),
+          ),
+          title: Text(
+            'Enter input',
+            style: TextStyle(
+                fontWeight: FontWeight.w700,
+                fontSize: 20.sp,
+                color: Colors.black,
+                fontFamily: 'Nunito',
+            ),
+          ),
+          content: TextFormField(
+            controller: inputTextController,
+            keyboardType: TextInputType.multiline,
+            maxLines: null,
+            decoration: InputDecoration(
+              hintText: 'Input',
+              hintStyle: TextStyle(
+                fontWeight: FontWeight.w700,
+                fontSize: 16.sp,
+                color: Colors.grey,
+                fontFamily: 'Nunito',
+              ),
+              enabledBorder: const UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.black),
+              ),
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                print(inputTextController.text);
+                showCustomToast(context: context, message: "Now, click on Run button!");
+                Navigator.pop(context);
+              },
+              child: Text(
+                'Save',
+                style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 18.sp,
+                    color: Colors.black,
+                    fontFamily: 'Nunito',
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text(
+                'Cancel',
+                style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 18.sp,
+                  color: Colors.black,
+                  fontFamily: 'Nunito',
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _executeCode() async {
+    print("Code:");
+    print(_codeController?.text);
+    print("Input:");
+    print(inputTextController.text);
+    if(inputTextController.text.isEmpty){
+      inputTextController.text = '';
+    }
+    String encodedCode = Uri.encodeComponent(_codeController!.text);
+    print(encodedCode);
+    var response = await api.compileCode(encodedCode, inputTextController.text, _selectedLanguage);
+    _showOutputBottomSheet(response);
+    inputTextController.text = '';
+  }
+
   @override
   Widget build(BuildContext context) {
     var source = '';
@@ -326,9 +413,9 @@ class _CodeInputScreenState extends State<CodeInputScreen> {
       body: SingleChildScrollView(
         child: CodeField(
           onChanged: (String text) {
-            if (text == '(') {
-              _addClosingBracket();
-            }
+            // if (text == '(') {
+            //   _addClosingBracket();
+            // }
           },
           controller: _codeController!,
           cursorColor: AppColors.primary,
@@ -338,45 +425,53 @@ class _CodeInputScreenState extends State<CodeInputScreen> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(100),
-        ),
+      // floatingActionButton: FloatingActionButton(
+      //   shape: RoundedRectangleBorder(
+      //     borderRadius: BorderRadius.circular(100),
+      //   ),
+      //   backgroundColor: AppColors.primary,
+      //   onPressed: () async {
+      //     print("Code:");
+      //     print(_codeController?.text);
+      //     String encodedCode = Uri.encodeComponent(_codeController!.text);
+      //     print(encodedCode);
+      //     var response =
+      //         await api.compileCode(encodedCode, "", _selectedLanguage);
+      //     _showOutputBottomSheet(response);
+      //   },
+      //   child: const Icon(
+      //     Icons.play_arrow_sharp,
+      //   ),
+      // ),
+      bottomNavigationBar: BottomNavigationBar(
         backgroundColor: AppColors.primary,
-        onPressed: () async {
-          print("Code:");
-          print(_codeController?.text);
-          String encodedCode = Uri.encodeComponent(_codeController!.text);
-          print(encodedCode);
-          var response =
-              await api.compileCode(encodedCode, "", _selectedLanguage);
-          _showOutputBottomSheet(response);
+        type: BottomNavigationBarType.fixed,
+        showSelectedLabels: true,
+        showUnselectedLabels: true,
+        unselectedItemColor:  Colors.white,
+        selectedItemColor: Colors.white,
+        onTap: (index) {
+          if (index == 0) {
+            _showInputContainer();
+          } else if (index == 1) {
+            _executeCode();
+          }
         },
-        child: const Icon(
-          Icons.play_arrow_sharp,
-        ),
+        items: const [
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.input_outlined
+              ),
+            label: 'Input'
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(
+                  Icons.play_arrow_sharp
+              ),
+            label: 'Run'
+          )
+        ],
       ),
     );
-  }
-
-  void _addClosingBracket() {
-    setState(() async {
-      await showDialog<void>(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('That is correct!'),
-              content: const Text('13 is the right answer.'),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text('OK'),
-                ),
-              ],
-            );
-          });
-    });
   }
 }

@@ -20,8 +20,50 @@ class _ProblemsTopicsState extends State<ProblemsTopics> {
   List<dynamic> strings = [];
   List<dynamic> trees = [];
   List<dynamic> linkedList = [];
-  List<dynamic> sorting = [];
-
+  List<dynamic> greedy = [];
+  double progressArrays = 0.0;
+  double progressStrings = 0.0;
+  double progressTrees = 0.0;
+  double progressLinkedList = 0.0;
+  double progressGreedy = 0.0;
+  double progressStack = 0.0;
+  List<Map<String, dynamic>> problemDataList = [
+    {
+      'problem_name': 'Largest element in an array',
+      'solved': true,
+      'bookmarked': false,
+    },
+    {
+      'problem_name': 'Smallest element in an array',
+      'solved': false,
+      'bookmarked': true,
+    },
+    {
+      'problem_name': 'Merge two sorted arrays',
+      'solved': true,
+      'bookmarked': true,
+    },
+    {
+      'problem_name': 'Reverse an array',
+      'solved': true,
+      'bookmarked': false,
+    },
+    {
+      'problem_name': 'Find the missing number in an array',
+      'solved': false,
+      'bookmarked': false,
+    },
+    {
+      'problem_name': 'Remove duplicates from a sorted array',
+      'solved': true,
+      'bookmarked': true,
+    },
+    {
+      'problem_name': 'Count frequency of elements in an array',
+      'solved': false,
+      'bookmarked': false,
+    },
+  ];
   final List<Map<String, String>> dataList = [
     {
       'title': 'Arrays',
@@ -39,14 +81,14 @@ class _ProblemsTopicsState extends State<ProblemsTopics> {
       'A queue orders its elements in a specific order. Queues typically follow the FIFO (First In First Out) order..',
     },
     {
-      'title': 'Linked Lists',
+      'title': 'Linked List',
       'description':
       'A set is an unordered collection of unique items. Sets do not allow duplicates..',
     },
     {
-      'title': 'Sorting',
+      'title': 'Greedy',
       'description':
-      'A map is an object that maps keys to values. A map cannot contain duplicate keys..',
+      'Solve greedy problems greedily..',
     },
     {
       'title': 'Stacks',
@@ -62,16 +104,73 @@ class _ProblemsTopicsState extends State<ProblemsTopics> {
   }
 
   initializePrefs()async{
-    print("Inside init prefs");
-    arrays = await api.fetchProblems("arrays");
-    strings = await api.fetchProblems("strings");
-    trees = await api.fetchProblems("trees");
-    linkedList = await api.fetchProblems("linkedList");
-    sorting = await api.fetchProblems("sorting");
+    arrays = await api.fetchProblemsWithDesc("Arrays");
+    strings = await api.fetchProblemsWithDesc("Strings");
+    trees = await api.fetchProblemsWithDesc("Trees");
+    linkedList = await api.fetchProblemsWithDesc("Linked List");
+    greedy = await api.fetchProblemsWithDesc("Greedy");
 
-    print("Output inside init prefs");
+    int count = 0;
+    for(int i = 0; i < arrays.length; i++){
+      if(arrays[i]['solved'] == true){
+        count++;
+      }
+    }
+    progressArrays = count/arrays.length;
+    count = 0;
+    for(int i = 0; i < strings.length; i++){
+      if(strings[i]['solved'] == true){
+        count++;
+      }
+    }
+    progressStrings = count/strings.length;
+    count = 0;
+    for(int i = 0; i < trees.length; i++){
+      if(trees[i]['solved'] == true){
+        count++;
+      }
+    }
+    progressTrees = count/trees.length;
+    count = 0;
+    for(int i = 0; i < linkedList.length; i++){
+      if(linkedList[i]['solved'] == true){
+        count++;
+      }
+    }
+    progressLinkedList = count/linkedList.length;
+    count = 0;
+    for(int i = 0; i < greedy.length; i++){
+      if(greedy[i]['solved'] == true){
+        count++;
+      }
+    }
+    progressGreedy = count/greedy.length;
+    count = 0;
+    for(int i = 0; i < problemDataList.length; i++){
+      if(problemDataList[i]['solved'] == true){
+        count++;
+      }
+    }
+    progressStack = count/problemDataList.length;
+    setState(() {});
   }
-
+  double calcValue(String title){
+    double value = 0.0;
+    if(title == 'Arrays'){
+      value = progressArrays;
+    } else if(title == 'Strings'){
+      value = progressStrings;
+    } else if(title == 'Greedy'){
+      value = progressGreedy;
+    } else if(title == 'Linked List'){
+      value = progressLinkedList;
+    } else if(title == 'Trees'){
+      value = progressTrees;
+    } else if(title == 'Stacks'){
+      value = progressStack;
+    }
+    return value;
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -113,12 +212,14 @@ class _ProblemsTopicsState extends State<ProblemsTopics> {
                         problems = arrays;
                       } else if(dataList[index]['title'] == 'Strings'){
                         problems = strings;
-                      } else if(dataList[index]['title'] == 'Sorting'){
-                        problems = sorting;
-                      } else if(dataList[index]['title'] == 'Linked Lists'){
+                      } else if(dataList[index]['title'] == 'Greedy'){
+                        problems = greedy;
+                      } else if(dataList[index]['title'] == 'Linked List'){
                         problems = linkedList;
                       } else if(dataList[index]['title'] == 'Trees'){
                         problems = trees;
+                      } else if(dataList[index]['title'] == 'Stacks'){
+                        problems = problemDataList;
                       }
                       Get.to(() => Problems(category: dataList[index]['title']!, problemsList: problems));
                     },
@@ -135,7 +236,7 @@ class _ProblemsTopicsState extends State<ProblemsTopics> {
                             Row(
                               children: [
                                 CircularProgressIndicator(
-                                  value: math.Random().nextDouble(),
+                                  value: calcValue(dataList[index]['title']!),
                                   color: AppColors.primary,
                                   backgroundColor: const Color(0xFFC4C8F8),
                                   strokeWidth: 8.0,

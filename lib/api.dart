@@ -11,7 +11,6 @@ class Api{
   static List<String> url = [
     "http://192.168.222.168:5000/",
     "http://192.168.222.168:8000/",
-    //"http://localhost:5000/",
     "http://16.171.31.213/"
   ];
   static int index = 0;
@@ -26,7 +25,11 @@ class Api{
 
   //Fetch Problems
   String fetchProblemsURL = "${url[1]}problems";
+  String fetchProblemsDescURL = "${url[0]}problems";
 
+  //Mark as solved and bookmarked
+  String markSolvedURL = "${url[0]}/problems/solved";
+  String markBookmarkedURL = "${url[0]}/problems/bookmarked";
 
   Future<dynamic> registerUser(
       String name,
@@ -96,7 +99,7 @@ class Api{
       ) async {
     try {
       if (kDebugMode) {
-        print("Inside send code");
+        //print("Inside send code");
       }
       dynamic data = {
         'code': code,
@@ -112,19 +115,19 @@ class Api{
       );
       Map<String, dynamic> responseData = json.decode(response.data);
 
-
       if (kDebugMode) {
-        print(data);
-        print("Response inside function: ");
-        print(response.data);
-        String output = responseData["output"];
-        print("Output: $output");
+        // print(data);
+        // print("Response inside function: ");
+        // print(response.data);
+        // String output = responseData["output"];
+        // print("Output: $output");
       }
       return responseData["output"];
     } catch (e) {
       log(e.toString());
     }
   }
+
   Future<dynamic> fetchProblems(
       String collectionName,
       ) async {
@@ -146,6 +149,84 @@ class Api{
       //   print(response);
       // }
 
+      return response.data;
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+
+  Future<dynamic> fetchProblemsWithDesc(
+      String category,
+      ) async {
+    try {
+      if (kDebugMode) {
+        //print("Inside fetch fetchProblemsWithDesc");
+      }
+      dynamic data = {
+        'category': category,
+      };
+      if (kDebugMode) {
+        print("$fetchProblemsDescURL $data");
+      }
+      Response response = await dio.get(
+        fetchProblemsDescURL,
+        queryParameters: data,
+      );
+      if (kDebugMode) {
+        //print(response);
+      }
+
+      return response.data;
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+
+  Future<dynamic> markAsSolved(
+      String problemName,
+      ) async {
+    try {
+      if (kDebugMode) {
+        print("Inside markAsSolved");
+      }
+      dynamic data = {
+        'problem_name': problemName,
+      };
+      if (kDebugMode) {
+        print("$markSolvedURL $data");
+      }
+      Response response = await dio.get(
+        markSolvedURL,
+        queryParameters: data,
+      );
+      if (kDebugMode) {
+        print(response);
+      }
+      return response.data;
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+  Future<dynamic> markBookmarked(
+      String problemName,
+      ) async {
+    try {
+      if (kDebugMode) {
+        print("Inside markBookmarked");
+      }
+      dynamic data = {
+        'problem_name': problemName,
+      };
+      if (kDebugMode) {
+        print("$markBookmarkedURL $data");
+      }
+      Response response = await dio.get(
+        markBookmarkedURL,
+        queryParameters: data,
+      );
+      if (kDebugMode) {
+        print(response);
+      }
       return response.data;
     } catch (e) {
       log(e.toString());

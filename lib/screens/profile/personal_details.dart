@@ -11,32 +11,47 @@ import '../../utils/colors.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_text_field.dart';
 
-class PersonalDetails extends StatelessWidget {
+class PersonalDetails extends StatefulWidget {
+  const PersonalDetails({super.key});
 
-   PersonalDetails({super.key});
-   late final File _profileImage;
-   TextEditingController nameController = TextEditingController();
-   TextEditingController emailController = TextEditingController();
-   TextEditingController mobileController = TextEditingController();
-   TextEditingController dobController = TextEditingController();
-   TextEditingController collegeNameController = TextEditingController();
-   TextEditingController branchController = TextEditingController();
+  @override
+  State<PersonalDetails> createState() => _PersonalDetailsState();
+}
 
+class _PersonalDetailsState extends State<PersonalDetails> {
+  File? _profileImage;
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController mobileController = TextEditingController();
+  TextEditingController dobController = TextEditingController();
+  TextEditingController collegeNameController = TextEditingController();
+  TextEditingController branchController = TextEditingController();
 
-   _uploadImage() async {
-     FilePickerResult? result = await FilePicker.platform.pickFiles(
-       type: FileType.custom,
-       allowedExtensions: ['jpeg', 'png', 'jpg'],
-     );
+  _uploadImage() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['jpeg', 'png', 'jpg'],
+    );
 
-     if (result != null) {
-       File file = File(result.files.single.path!);
-       _profileImage = file;
-     }
-   }
-   _save(){
+    if (result != null) {
+      File file = File(result.files.single.path!);
+      setState(() {
+        _profileImage = file;
+      });
+    }
+  }
 
-   }
+  _save() {}
+
+  @override
+  void initState() {
+    super.initState();
+    initializePrefs();
+  }
+
+  initializePrefs() {
+    nameController.text = SharedPreferencesHelper.getUserName();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,148 +77,158 @@ class PersonalDetails extends StatelessWidget {
         ),
       ),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 10.h),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 15.h,),
-              Center(
-                child: Stack(
-                  children: [
-                    const CircleAvatar(
-                      backgroundColor: Colors.transparent,
-                      radius: 60,
-                      backgroundImage:
-                      AssetImage('assets/home/dummy_profile.png'),
-                    ),
-                    Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: GestureDetector(
-                        onTap: () {
-                          _uploadImage();
-                        },
-                        child: Image.asset(
-                          'assets/profile/edit_profile.png',
-                          width: 40.w,
-                          height: 40.h,
-                        ),
+          child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 10.h),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: 15.h,
+            ),
+            Center(
+              child: Stack(
+                children: [
+                  CircleAvatar(
+                    backgroundColor: Colors.transparent,
+                    backgroundImage: _profileImage != null
+                        ? FileImage(_profileImage!) as ImageProvider
+                        : const AssetImage('assets/home/dummy_profile.png'),
+                    radius: 60.r,
+                  ),
+                  // const CircleAvatar(
+                  //   backgroundColor: Colors.transparent,
+                  //   radius: 60,
+                  //   backgroundImage:
+                  //       AssetImage('assets/home/dummy_profile.png'),
+                  // ),
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: GestureDetector(
+                      onTap: () {
+                        _uploadImage();
+                      },
+                      child: Image.asset(
+                        'assets/profile/edit_profile.png',
+                        width: 40.w,
+                        height: 40.h,
                       ),
-                    )
-                  ],
-                ),
+                    ),
+                  )
+                ],
               ),
-              SizedBox(height: 10.h,),
-              Text(
-                'Name',
-                style: TextStyle(
-                  fontSize: 18.sp,
-                ),
+            ),
+            SizedBox(
+              height: 10.h,
+            ),
+            Text(
+              'Name',
+              style: TextStyle(
+                fontSize: 18.sp,
               ),
-              SizedBox(
-                height: 10.h,
+            ),
+            SizedBox(
+              height: 10.h,
+            ),
+            CustomTextField(
+              controller: nameController,
+              keyboardType: TextInputType.name,
+            ),
+            SizedBox(
+              height: 10.h,
+            ),
+            Text(
+              'E-mail',
+              style: TextStyle(
+                fontSize: 18.sp,
               ),
-              CustomTextField(
-                controller: nameController,
-                keyboardType: TextInputType.name,
+            ),
+            SizedBox(
+              height: 10.h,
+            ),
+            CustomTextField(
+              controller: emailController,
+              keyboardType: TextInputType.emailAddress,
+            ),
+            SizedBox(
+              height: 10.h,
+            ),
+            Text(
+              'Mobile No.',
+              style: TextStyle(
+                fontSize: 18.sp,
               ),
-              SizedBox(
-                height: 10.h,
+            ),
+            SizedBox(
+              height: 10.h,
+            ),
+            CustomTextField(
+              controller: mobileController,
+              keyboardType: TextInputType.phone,
+            ),
+            SizedBox(
+              height: 10.h,
+            ),
+            Text(
+              'Date of Birth',
+              style: TextStyle(
+                fontSize: 18.sp,
               ),
-              Text(
-                'E-mail',
-                style: TextStyle(
-                  fontSize: 18.sp,
-                ),
+            ),
+            SizedBox(
+              height: 10.h,
+            ),
+            CustomTextField(
+              controller: dobController,
+              keyboardType: TextInputType.datetime,
+            ),
+            SizedBox(
+              height: 10.h,
+            ),
+            Text(
+              'College Name',
+              style: TextStyle(
+                fontSize: 18.sp,
               ),
-              SizedBox(
-                height: 10.h,
+            ),
+            SizedBox(
+              height: 10.h,
+            ),
+            CustomTextField(
+              controller: collegeNameController,
+              keyboardType: TextInputType.text,
+            ),
+            SizedBox(
+              height: 10.h,
+            ),
+            Text(
+              'Branch of Study',
+              style: TextStyle(
+                fontSize: 18.sp,
               ),
-              CustomTextField(
-                controller: emailController,
-                keyboardType: TextInputType.emailAddress,
-              ),
-              SizedBox(
-                height: 10.h,
-              ),
-              Text(
-                'Mobile No.',
-                style: TextStyle(
-                  fontSize: 18.sp,
-                ),
-              ),
-              SizedBox(
-                height: 10.h,
-              ),
-              CustomTextField(
-                controller: mobileController,
-                keyboardType: TextInputType.phone,
-              ),
-              SizedBox(
-                height: 10.h,
-              ),
-              Text(
-                'Date of Birth',
-                style: TextStyle(
-                  fontSize: 18.sp,
-                ),
-              ),
-              SizedBox(
-                height: 10.h,
-              ),
-              CustomTextField(
-                controller: dobController,
-                keyboardType: TextInputType.datetime,
-              ),
-              SizedBox(
-                height: 10.h,
-              ),
-              Text(
-                'College Name',
-                style: TextStyle(
-                  fontSize: 18.sp,
-                ),
-              ),
-              SizedBox(
-                height: 10.h,
-              ),
-              CustomTextField(
-                controller: collegeNameController,
-                keyboardType: TextInputType.text,
-              ),
-              SizedBox(
-                height: 10.h,
-              ),
-              Text(
-                'Branch of Study',
-                style: TextStyle(
-                  fontSize: 18.sp,
-                ),
-              ),
-              SizedBox(
-                height: 10.h,
-              ),
-              CustomTextField(
-                controller: branchController,
-                keyboardType: TextInputType.text,
-              ),
-              SizedBox(
-                height: 50.h,
-              ),
-              CustomElevatedButton(
-                text: 'Save',
-                onPressed: () {
-                  _save();
-                },
-              ),
-              SizedBox(
-                height: 30.h,
-              ),
-            ],
-          ),
-        )
-      ),
+            ),
+            SizedBox(
+              height: 10.h,
+            ),
+            CustomTextField(
+              controller: branchController,
+              keyboardType: TextInputType.text,
+            ),
+            SizedBox(
+              height: 50.h,
+            ),
+            CustomElevatedButton(
+              text: 'Save',
+              onPressed: () {
+                _save();
+              },
+            ),
+            SizedBox(
+              height: 30.h,
+            ),
+          ],
+        ),
+      )),
     );
   }
 }

@@ -34,6 +34,7 @@ dependencies:
   toastification: ^1.2.1
   permission_handler: ^11.3.1
   open_file: ^3.3.2
+  google_fonts: ^6.2.1
 
 dev_dependencies:
   flutter_test:
@@ -54,6 +55,12 @@ flutter:
       fonts:
         - asset: assets/fonts/PragatiNarrow-Bold.ttf
         - asset: assets/fonts/PragatiNarrow-Bold.ttf
+    - family: Lato
+      fonts:
+        - asset: assets/fonts/Lato-Regular.ttf
+        - asset: assets/fonts/Lato-Bold.ttf
+        - asset: assets/fonts/Lato-Italic.ttf
+
 
   assets:
      - assets/bottom_nav_icons/
