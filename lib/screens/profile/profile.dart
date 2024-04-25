@@ -210,7 +210,7 @@ class _ProfileState extends State<Profile> {
                       onTap: () {}),
                 ),
                 SizedBox(
-                  height: 300.h,
+                  height: 100.h,
                 ),
               ],
             ),

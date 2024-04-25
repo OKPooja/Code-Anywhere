@@ -41,11 +41,9 @@ class _HomeState extends State<Home> {
   }
 
   initializePrefs()async{
-    print("Inside init prefs");
-    arrays = await api.fetchProblems("arrays");
-    strings = await api.fetchProblems("strings");
-    trees = await api.fetchProblems("trees");
-    print("Output inside init prefs");
+    arrays = await api.fetchProblemsWithDesc("Arrays");
+    strings = await api.fetchProblemsWithDesc("Strings");
+    trees = await api.fetchProblemsWithDesc("Trees");
   }
 
   @override
@@ -65,7 +63,7 @@ class _HomeState extends State<Home> {
             ///Appbar
             Padding(
               padding: EdgeInsets.symmetric(
-                horizontal: 10.w,
+                horizontal: 20.w,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -111,7 +109,7 @@ class _HomeState extends State<Home> {
             ///Categories
             Padding(
               padding: EdgeInsets.symmetric(
-                horizontal: 10.w,
+                horizontal: 20.w,
               ),
               child: Text(
                 'Categories',
@@ -134,8 +132,7 @@ class _HomeState extends State<Home> {
                 height: 250.h,
                 child: GestureDetector(
                   onTap: (){
-                    // Get.to(const Keyboard());
-                     Get.to(GetAllFiles());
+                     Get.to(const Keyboard());
                   },
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,

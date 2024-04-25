@@ -62,16 +62,11 @@ class _ProblemsTopicsState extends State<ProblemsTopics> {
   }
 
   initializePrefs()async{
-    print("Inside init prefs");
-    //arrays = await api.fetchProblems("arrays");
     arrays = await api.fetchProblemsWithDesc("Arrays");
     strings = await api.fetchProblemsWithDesc("Strings");
     trees = await api.fetchProblemsWithDesc("Trees");
     linkedList = await api.fetchProblemsWithDesc("Linked List");
     greedy = await api.fetchProblemsWithDesc("Greedy");
-
-    print(arrays);
-    print("Output inside init prefs");
   }
 
   @override
