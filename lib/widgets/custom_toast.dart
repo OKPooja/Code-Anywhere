@@ -4,7 +4,7 @@ import 'package:toastification/toastification.dart';
 void showCustomToast({
   required BuildContext context,
   required String message,
-  Duration autoCloseDuration = const Duration(seconds: 5),
+  Duration autoCloseDuration = const Duration(seconds: 2),
   Alignment alignment = Alignment.bottomCenter,
   Color primaryColor = Colors.green,
   Color backgroundColor = Colors.white,
