@@ -45,7 +45,6 @@ class _HomeState extends State<Home> {
     arrays = await api.fetchProblems("arrays");
     strings = await api.fetchProblems("strings");
     trees = await api.fetchProblems("trees");
-
     print("Output inside init prefs");
   }
 

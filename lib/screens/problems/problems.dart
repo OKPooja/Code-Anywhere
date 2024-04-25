@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:project/screens/problems/problem_description.dart';
 import 'package:project/utils/colors.dart';
 
 class Problems extends StatefulWidget {
@@ -20,58 +21,58 @@ class _ProblemsState extends State<Problems> {
   List<Map<String, dynamic>> problemDataList = [
     {
       'problem': 'Largest element in an array',
-      'isCompleted': true,
-      'isBookmarked': false,
+      'solved': true,
+      'bookmarked': false,
     },
     {
       'problem': 'Smallest element in an array',
-      'isCompleted': false,
-      'isBookmarked': true,
+      'solved': false,
+      'bookmarked': true,
     },
     {
       'problem': 'Merge two sorted arrays',
-      'isCompleted': true,
-      'isBookmarked': true,
+      'solved': true,
+      'bookmarked': true,
     },
     {
       'problem': 'Reverse an array',
-      'isCompleted': true,
-      'isBookmarked': false,
+      'solved': true,
+      'bookmarked': false,
     },
     {
       'problem': 'Find the missing number in an array',
-      'isCompleted': false,
-      'isBookmarked': false,
+      'solved': false,
+      'bookmarked': false,
     },
     {
       'problem': 'Remove duplicates from a sorted array',
-      'isCompleted': true,
-      'isBookmarked': true,
+      'solved': true,
+      'bookmarked': true,
     },
     {
       'problem': 'Count frequency of elements in an array',
-      'isCompleted': false,
-      'isBookmarked': false,
+      'solved': false,
+      'bookmarked': false,
     },
     {
       'problem': 'Rotate an array',
-      'isCompleted': false,
-      'isBookmarked': true,
+      'solved': false,
+      'bookmarked': true,
     },
     {
       'problem': 'Find maximum sum subarray',
-      'isCompleted': true,
-      'isBookmarked': false,
+      'solved': true,
+      'bookmarked': false,
     },
     {
       'problem': 'Search in a rotated sorted array',
-      'isCompleted': false,
-      'isBookmarked': true,
+      'solved': false,
+      'bookmarked': true,
     },
     {
       'problem': 'Find common elements in multiple arrays',
-      'isCompleted': true,
-      'isBookmarked': false,
+      'solved': true,
+      'bookmarked': false,
     },
   ];
 
@@ -83,7 +84,8 @@ class _ProblemsState extends State<Problems> {
     if(problemsList.isEmpty){
       problemsList = problemDataList;
     }
-    print(problemsList);
+    print("Here is the problems list");
+    print(problemsList[0]['solved']);
   }
 
   @override
@@ -129,78 +131,66 @@ class _ProblemsState extends State<Problems> {
                     problemsList.length >= 100 ? 100 : problemsList.length,
                 //itemCount: problemDataList.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return Card(
-                    color: const Color(0xFFECF7FD),
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.r),
-                    ),
-                    child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 8.h, horizontal: 10.w),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.6,
-                            child: Text(
-                              problemsList[index]['problem'],
-                              //problemDataList[index]['problem'],
-                              style: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 22.sp,
-                                fontFamily: 'PragatiNarrow',
-                                color: AppColors.primary,
+                  return GestureDetector(
+                    onTap: (){
+                      Get.to(() => ProblemDescription(problemDesc: problemsList[index],));
+                    },
+                    child: Card(
+                      color: const Color(0xFFECF7FD),
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.r),
+                      ),
+                      child: Padding(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 8.h, horizontal: 10.w),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.6,
+                              child: Text(
+                                problemsList[index]['problem_name'],
+                                //problemDataList[index]['problem'],
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 22.sp,
+                                  fontFamily: 'PragatiNarrow',
+                                  color: AppColors.primary,
+                                ),
+                                overflow: TextOverflow.ellipsis,
                               ),
-                              overflow: TextOverflow.ellipsis,
                             ),
-                          ),
-                          Row(
-                            children: [
-                              index >= problemDataList.length
-                                  ? const Icon(
-                                      Icons.circle,
-                                      color: Colors.transparent,
-                                    )
-                                  : Icon(
-                                      problemDataList[index]['isCompleted']
-                                          ? Icons.check_circle
-                                          : Icons.circle,
-                                      color: problemDataList[index]
-                                              ['isCompleted']
-                                          ? Colors.green
-                                          : Colors.transparent,
-                                    ),
-                              index >= problemDataList.length
-                              ? GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                  });
-                                },
-                                child: Icon(
-                                  Icons.bookmark,
-                                  color: Colors.black87,
+                            Row(
+                              children: [
+                                Icon(
+                                    problemsList[index]['solved']
+                                        ? Icons.check_circle
+                                        : Icons.circle,
+                                        color: problemsList[index]['solved']
+                                        ? Colors.green
+                                        : Colors.transparent,
                                 ),
-                              )
-                              : GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    problemDataList[index]['isBookmarked'] =
-                                    !problemDataList[index]['isBookmarked'];
-                                  });
-                                },
-                                child: Icon(
-                                  problemDataList[index]['isBookmarked']
-                                      ? Icons.bookmark
-                                      : Icons.bookmark_border,
-                                  color: problemDataList[index]['isBookmarked']
-                                      ? Colors.black87
-                                      : Colors.black87,
-                                ),
-                              )
-                            ],
-                          )
-                        ],
+                                GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      problemsList[index]['bookmarked'] =
+                                      !problemsList[index]['bookmarked'];
+                                    });
+                                  },
+                                  child: Icon(
+                                    problemsList[index]['bookmarked']
+                                        ? Icons.bookmark
+                                        : Icons.bookmark_border,
+                                    color: problemsList[index]['bookmarked']
+                                        ? Colors.black87
+                                        : Colors.black87,
+                                  ),
+                                )
+                              ],
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   );

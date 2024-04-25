@@ -20,7 +20,7 @@ class _ProblemsTopicsState extends State<ProblemsTopics> {
   List<dynamic> strings = [];
   List<dynamic> trees = [];
   List<dynamic> linkedList = [];
-  List<dynamic> sorting = [];
+  List<dynamic> greedy = [];
 
   final List<Map<String, String>> dataList = [
     {
@@ -44,9 +44,9 @@ class _ProblemsTopicsState extends State<ProblemsTopics> {
       'A set is an unordered collection of unique items. Sets do not allow duplicates..',
     },
     {
-      'title': 'Sorting',
+      'title': 'Greedy',
       'description':
-      'A map is an object that maps keys to values. A map cannot contain duplicate keys..',
+      'Solve greedy problems greedily..',
     },
     {
       'title': 'Stacks',
@@ -63,12 +63,14 @@ class _ProblemsTopicsState extends State<ProblemsTopics> {
 
   initializePrefs()async{
     print("Inside init prefs");
-    arrays = await api.fetchProblems("arrays");
-    strings = await api.fetchProblems("strings");
-    trees = await api.fetchProblems("trees");
-    linkedList = await api.fetchProblems("linkedList");
-    sorting = await api.fetchProblems("sorting");
+    //arrays = await api.fetchProblems("arrays");
+    arrays = await api.fetchProblemsWithDesc("Arrays");
+    strings = await api.fetchProblemsWithDesc("Strings");
+    trees = await api.fetchProblemsWithDesc("Trees");
+    linkedList = await api.fetchProblemsWithDesc("Linked List");
+    greedy = await api.fetchProblemsWithDesc("Greedy");
 
+    print(arrays);
     print("Output inside init prefs");
   }
 
@@ -113,8 +115,8 @@ class _ProblemsTopicsState extends State<ProblemsTopics> {
                         problems = arrays;
                       } else if(dataList[index]['title'] == 'Strings'){
                         problems = strings;
-                      } else if(dataList[index]['title'] == 'Sorting'){
-                        problems = sorting;
+                      } else if(dataList[index]['title'] == 'Greedy'){
+                        problems = greedy;
                       } else if(dataList[index]['title'] == 'Linked Lists'){
                         problems = linkedList;
                       } else if(dataList[index]['title'] == 'Trees'){

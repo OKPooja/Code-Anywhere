@@ -11,7 +11,6 @@ class Api{
   static List<String> url = [
     "http://192.168.222.168:5000/",
     "http://192.168.222.168:8000/",
-    //"http://localhost:5000/",
     "http://16.171.31.213/"
   ];
   static int index = 0;
@@ -26,7 +25,7 @@ class Api{
 
   //Fetch Problems
   String fetchProblemsURL = "${url[1]}problems";
-
+  String fetchProblemsDescURL = "${url[0]}problems";
 
   Future<dynamic> registerUser(
       String name,
@@ -145,6 +144,32 @@ class Api{
       // if (kDebugMode) {
       //   print(response);
       // }
+
+      return response.data;
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+  Future<dynamic> fetchProblemsWithDesc(
+      String category,
+      ) async {
+    try {
+      if (kDebugMode) {
+        print("Inside fetch fetchProblemsWithDesc");
+      }
+      dynamic data = {
+        'category': category,
+      };
+      if (kDebugMode) {
+        print("$fetchProblemsDescURL $data");
+      }
+      Response response = await dio.get(
+        fetchProblemsDescURL,
+        queryParameters: data,
+      );
+      if (kDebugMode) {
+        print(response);
+      }
 
       return response.data;
     } catch (e) {
