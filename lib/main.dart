@@ -1,5 +1,5 @@
 import 'dart:developer';
-
+import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -50,20 +50,45 @@ class MyApp extends StatelessWidget {
       builder: (context, child){
         return GetMaterialApp(
           debugShowCheckedModeBanner: false,
-          title: 'MPR',
+          title: 'Code Anywhere',
           theme: ThemeData(
             highlightColor: AppColors.primary,
             colorScheme: ColorScheme.fromSwatch().copyWith(primary: AppColors.primary),
             useMaterial3: true,
           ),
-          home: (isFirstTime == null || isFirstTime == true)
-              ? const OnBoardingScreen()
-              : (SharedPreferencesHelper.getIsLoggedIn() == true)
-                ? BottomNav(currentIndex: 0)
-                  : const LoginScreen(),
+          home: child,
           //home: BottomNav(currentIndex: 0,),
         );
       },
+      child: Scaffold(
+        body: DoubleBackToCloseApp(
+            snackBar: SnackBar(
+              backgroundColor: AppColors.primary,
+              shape: ShapeBorder.lerp(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(2.0),
+                ),
+                const StadiumBorder(),
+                0.2,
+              )!,
+              width: 300,
+              behavior: SnackBarBehavior.floating,
+              content: const Text(
+                'Double tap to exit app',
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              duration: const Duration(seconds: 1),
+            ),
+            child: (isFirstTime == null || isFirstTime == true)
+                ? const OnBoardingScreen()
+                : (SharedPreferencesHelper.getIsLoggedIn() == true)
+                ? BottomNav(currentIndex: 0)
+                : const LoginScreen(),
+        ),
+      ),
     );
   }
 }

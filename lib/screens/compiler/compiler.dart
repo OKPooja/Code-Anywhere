@@ -11,11 +11,9 @@ import 'package:highlight/languages/cpp.dart';
 import 'package:highlight/languages/java.dart';
 import 'package:project/screens/compiler/syntax_highlight.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:toastification/toastification.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../api.dart';
 import '../../utils/colors.dart';
-import '../../widgets/custom_text_field.dart';
 import '../../widgets/custom_toast.dart';
 
 class CodeInputScreen extends StatefulWidget {

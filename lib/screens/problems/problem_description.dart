@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-
+import 'package:project/widgets/custom_toast.dart';
+import '../../api.dart';
 import '../../utils/colors.dart';
 
 class ProblemDescription extends StatefulWidget {
@@ -55,10 +55,10 @@ class _ProblemDescriptionState extends State<ProblemDescription> {
       }
     }
 
-    print("Split data: ");
-    print('Description:\n$description\n');
-    print('Examples:\n$examples\n');
-    print('Constraints:\n$constraints\n');
+    // print("Split data: ");
+    // print('Description:\n$description\n');
+    // print('Examples:\n$examples\n');
+    // print('Constraints:\n$constraints\n');
   }
 
   @override
@@ -118,10 +118,13 @@ class _ProblemDescriptionState extends State<ProblemDescription> {
                       ),
                       SizedBox(width: 5.w,),
                       GestureDetector(
-                        onTap: () {
+                        onTap: () async{
+                          var result = await api.markBookmarked(problemDesc['problem_name']);
+                          if(result['status'] == 'success'){
+                            showCustomToast(context: context, message: "Bookmarked status updated successfully");
+                          }
                           setState(() {
-                            problemDesc['bookmarked'] =
-                            !problemDesc['bookmarked'];
+                            problemDesc['bookmarked'] = !problemDesc['bookmarked'];
                           });
                         },
                         child: Icon(
@@ -209,6 +212,46 @@ class _ProblemDescriptionState extends State<ProblemDescription> {
           ),
         ),
       ),
+      floatingActionButton: GestureDetector(
+        onTap: () async{
+          var result = await api.markAsSolved(problemDesc['problem_name']);
+          if(result['status'] == 'success'){
+            showCustomToast(context: context, message: "Problem status updated successfully");
+          }
+          setState(() {
+            problemDesc['solved'] = !problemDesc['solved'];
+          });
+        },
+        child: Material(
+          elevation: 10,
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.zero,
+              gradient: LinearGradient(
+                colors: [
+                  AppColors.primary,
+                  const Color(0xFF292C72),
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                problemDesc['solved']
+                ? 'Mark as unsolved'
+                : 'Mark as solved',
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                ),
+              ),
+            ),
+          ),
+        )
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }
