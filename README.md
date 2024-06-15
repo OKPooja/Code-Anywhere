@@ -31,7 +31,7 @@ You can view the screenshots of the application in this [Google Drive folder](ht
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/yourusername/CodeAnywhere.git
+    git clone https://github.com/OKPooja/Code-Anywhere.git
     ```
 
 2. Navigate to the project directory:
