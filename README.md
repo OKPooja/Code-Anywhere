@@ -18,7 +18,6 @@ CodeAnywhere is a mobile coding application developed using the Flutter framewor
 - **Backend**: Node.js
 - **Database**: MongoDB
 - **Web Scraping**: Selenium
-- **Packages**: CodeTextField for auto indentation
 
 ## Images
 
@@ -50,20 +49,3 @@ You can view the screenshots of the application in this [Google Drive folder](ht
     ```bash
     flutter run
     ```
-
-## Features in Detail
-
-### Code Compilation API
-
-- The integrated API allows users to compile their code directly within the application, ensuring a seamless coding experience without needing to switch between different tools.
-
-### Web Scraping for Coding Problems
-
-- Selenium is used to scrape coding problems from various online platforms, providing users with a wide range of challenges to practice and improve their skills.
-
-### Enhanced Code Editing
-
-- **Syntax Highlighting**: Makes the code more readable and easier to debug.
-- **Auto Indentation**: The CodeTextField package is utilized to automatically indent code, which enhances coding efficiency and reduces the likelihood of syntax errors.
-
-
