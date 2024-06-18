@@ -16,18 +16,20 @@ import '../../api.dart';
 import '../../utils/colors.dart';
 import '../../widgets/custom_toast.dart';
 
-class CodeInputScreen extends StatefulWidget {
-  const CodeInputScreen({Key? key}) : super(key: key);
+class DummyCodeScreen extends StatefulWidget {
+  const DummyCodeScreen({Key? key}) : super(key: key);
 
   @override
-  _CodeInputScreenState createState() => _CodeInputScreenState();
+  _DummyCodeScreenState createState() => _DummyCodeScreenState();
 }
 
-class _CodeInputScreenState extends State<CodeInputScreen> {
+class _DummyCodeScreenState extends State<DummyCodeScreen> {
   CodeController? _codeController;
   //Map<String, TextStyle>? theme = monokaiSublimeTheme;
   String _selectedLanguage = 'C++';
   TextEditingController inputTextController = TextEditingController();
+  bool isKeyboardVisible = false;
+  final focusNode = FocusNode();
 
   void _showOutputBottomSheet(String output) {
     Get.bottomSheet(
@@ -67,8 +69,17 @@ class _CodeInputScreenState extends State<CodeInputScreen> {
   void initState() {
     _codeController?.addListener(() {});
     super.initState();
+    focusNode.addListener(() {
+      setState(() {
+        isKeyboardVisible = focusNode.hasFocus;
+      });
+    });
   }
-
+  @override
+  void dispose() {
+    focusNode.dispose();
+    super.dispose();
+  }
   Future<String?> getDownloadPath() async {
     Directory? directory;
     try {
@@ -116,7 +127,7 @@ class _CodeInputScreenState extends State<CodeInputScreen> {
       print("Directory: $path");
       try {
         String? fileName = await _promptFileName(context);
-        if(fileName!.isNotEmpty){
+        if (fileName!.isNotEmpty) {
           File f;
           if (_selectedLanguage == "C++") {
             f = File("$path/$fileName.cpp");
@@ -162,10 +173,10 @@ class _CodeInputScreenState extends State<CodeInputScreen> {
             decoration: InputDecoration(
               hintText: 'File Name',
               hintStyle: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 16.sp,
-                  color: Colors.grey,
-                  fontFamily: 'Nunito',
+                fontWeight: FontWeight.w700,
+                fontSize: 16.sp,
+                color: Colors.grey,
+                fontFamily: 'Nunito',
               ),
               enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.black),
@@ -193,10 +204,10 @@ class _CodeInputScreenState extends State<CodeInputScreen> {
               child: Text(
                 'Cancel',
                 style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 18.sp,
-                    color: Colors.black,
-                    fontFamily: 'Nunito',
+                  fontWeight: FontWeight.w700,
+                  fontSize: 18.sp,
+                  color: Colors.black,
+                  fontFamily: 'Nunito',
                 ),
               ),
             ),
@@ -227,10 +238,10 @@ class _CodeInputScreenState extends State<CodeInputScreen> {
           title: Text(
             'Enter input',
             style: TextStyle(
-                fontWeight: FontWeight.w700,
-                fontSize: 20.sp,
-                color: Colors.black,
-                fontFamily: 'Nunito',
+              fontWeight: FontWeight.w700,
+              fontSize: 20.sp,
+              color: Colors.black,
+              fontFamily: 'Nunito',
             ),
           ),
           content: TextFormField(
@@ -254,16 +265,17 @@ class _CodeInputScreenState extends State<CodeInputScreen> {
             TextButton(
               onPressed: () {
                 print(inputTextController.text);
-                showCustomToast(context: context, message: "Now, click on Run button!");
+                showCustomToast(
+                    context: context, message: "Now, click on Run button!");
                 Navigator.pop(context);
               },
               child: Text(
                 'Save',
                 style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 18.sp,
-                    color: Colors.black,
-                    fontFamily: 'Nunito',
+                  fontWeight: FontWeight.w700,
+                  fontSize: 18.sp,
+                  color: Colors.black,
+                  fontFamily: 'Nunito',
                 ),
               ),
             ),
@@ -292,12 +304,13 @@ class _CodeInputScreenState extends State<CodeInputScreen> {
     print(_codeController?.text);
     print("Input:");
     print(inputTextController.text);
-    if(inputTextController.text.isEmpty){
+    if (inputTextController.text.isEmpty) {
       inputTextController.text = '';
     }
     String encodedCode = Uri.encodeComponent(_codeController!.text);
     print(encodedCode);
-    var response = await api.compileCode(encodedCode, inputTextController.text, _selectedLanguage);
+    var response = await api.compileCode(
+        encodedCode, inputTextController.text, _selectedLanguage);
     _showOutputBottomSheet(response);
     inputTextController.text = '';
   }
@@ -411,45 +424,75 @@ class _CodeInputScreenState extends State<CodeInputScreen> {
         ],
       ),
       body: SingleChildScrollView(
-        child: CodeField(
-          lineNumbers: true,
-          onChanged: (String text) {
-            // if (text == '(') {
-            //   _addClosingBracket();
-            // }
-          },
-          controller: _codeController!,
-          cursorColor: AppColors.primary,
-          textStyle: const TextStyle(
-            fontFamily: 'Nunito',
-            fontSize: 20,
-          ),
+        child: Column(
+          children: [
+            CodeField(
+              onTap: () {
+                setState(() {
+                  isKeyboardVisible = !isKeyboardVisible;
+                  if (isKeyboardVisible) {
+                    FocusScope.of(context).requestFocus(FocusNode());
+                  }
+                });
+              },
+              onChanged: (String text) {
+                // if (text == '(') {
+                //   _addClosingBracket();
+                // }
+              },
+              controller: _codeController!,
+              cursorColor: AppColors.primary,
+              textStyle: const TextStyle(
+                fontFamily: 'Nunito',
+                fontSize: 20,
+              ),
+            ),
+            Visibility(
+              visible: isKeyboardVisible,
+              child: Container(
+                color: Colors.grey.shade800,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    _buildKeyboardRow(['0','1', '2', '3', '4', '5', '6', '7', '8', '9']),
+                    _buildKeyboardRow(['{', '}', '[', ']', '(', ')', '<', '>', '.', ';']),
+                    _buildKeyboardRow(['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p']),
+                    _buildKeyboardRow(['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', '"']),
+                    _buildKeyboardRow(['!', 'z', 'x', 'c', 'v', 'b', 'n', 'm', '|', '&']),
+
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 4,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          buildButton(label: '#',),
+                          buildButton(label: '+', ),
+                          buildButton(label: '=', ),
+                          buildButton(label: '-', ),
+                          buildButton(label: 'Space', iconData: Icons.space_bar),
+                          buildButton(label: '_', ),
+                          buildButton(label: 'Shift', iconData: Icons.arrow_upward),
+                          buildButton(label: 'Backspace', iconData: Icons.backspace),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   shape: RoundedRectangleBorder(
-      //     borderRadius: BorderRadius.circular(100),
-      //   ),
-      //   backgroundColor: AppColors.primary,
-      //   onPressed: () async {
-      //     print("Code:");
-      //     print(_codeController?.text);
-      //     String encodedCode = Uri.encodeComponent(_codeController!.text);
-      //     print(encodedCode);
-      //     var response =
-      //         await api.compileCode(encodedCode, "", _selectedLanguage);
-      //     _showOutputBottomSheet(response);
-      //   },
-      //   child: const Icon(
-      //     Icons.play_arrow_sharp,
-      //   ),
-      // ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: AppColors.primary,
         type: BottomNavigationBarType.fixed,
         showSelectedLabels: true,
         showUnselectedLabels: true,
-        unselectedItemColor:  Colors.white,
+        unselectedItemColor: Colors.white,
         selectedItemColor: Colors.white,
         onTap: (index) {
           if (index == 0) {
@@ -460,19 +503,78 @@ class _CodeInputScreenState extends State<CodeInputScreen> {
         },
         items: const [
           BottomNavigationBarItem(
-              icon: Icon(
-                Icons.input_outlined
-              ),
-            label: 'Input'
-          ),
+              icon: Icon(Icons.input_outlined), label: 'Input'),
           BottomNavigationBarItem(
-              icon: Icon(
-                  Icons.play_arrow_sharp
-              ),
-            label: 'Run'
-          )
+              icon: Icon(Icons.play_arrow_sharp), label: 'Run')
         ],
       ),
     );
+  }
+  ///button keyboard row
+  _buildKeyboardRow(List<String> rowValues) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 3),
+      child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: rowValues.map((e) => buildButton(label: e)).toList()),
+    );
+  }
+
+  ///button design
+  InkWell buildButton({required String label, IconData? iconData}) {
+    return InkWell(
+      onTap: () {
+        _onButtonTap(label);
+      },
+      child: Material(
+        color: Colors.grey.shade200,
+        borderRadius: BorderRadius.circular(2),
+        elevation: 2,
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
+          decoration: BoxDecoration(
+              color: Colors.grey.shade200,
+              borderRadius: BorderRadius.circular(8)
+          ),
+          child: iconData != null
+              ? Icon(
+            iconData,
+            size: 18,
+            color: Colors.black,
+          )
+              : Text(
+            label,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+              color: Colors.black,
+              fontFamily: 'Nunito',
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+
+  ///on button tap
+  _onButtonTap(var value) {
+    // setState(() {
+    //   if (value == 'Backspace') {
+    //     if (_codeController?.isNotEmpty) {
+    //       textEditingController.text = textEditingController.text
+    //           .substring(0, textEditingController.text.length - 1);
+    //     }
+    //   } else if (value == 'Enter') {
+    //     final int cursorPosition = textEditingController.selection.baseOffset;
+    //     textEditingController.text = '${textEditingController.text.substring(0, cursorPosition)}\n${textEditingController.text.substring(cursorPosition)}';
+    //     textEditingController.selection = TextSelection.fromPosition(
+    //         TextPosition(offset: cursorPosition + 1));
+    //   } else if (value == "Space") {
+    //     textEditingController.text += " ";
+    //   } else {
+    //     textEditingController.text += value;
+    //   }
+    // });
   }
 }

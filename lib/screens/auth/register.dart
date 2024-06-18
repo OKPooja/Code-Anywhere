@@ -44,6 +44,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     } else{
       if(await api.registerUser(nameController.text, emailController.text, passwordController.text) == "success"){
         SharedPreferencesHelper.setIsLoggedIn(status: true);
+        SharedPreferencesHelper.setUserName(userName: nameController.text);
         showCustomToast(
           context: context,
           message: 'Registered Successfully',

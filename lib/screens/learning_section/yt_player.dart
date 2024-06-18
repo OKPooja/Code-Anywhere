@@ -10,7 +10,7 @@ class YouTubePlayer extends StatefulWidget {
   final String videoTitle;
   final String videoDescription;
 
-  YouTubePlayer({
+  const YouTubePlayer({super.key,
     required this.videoUrl,
     required this.videoTitle,
     required this.videoDescription,
@@ -43,7 +43,7 @@ class _YouTubePlayerState extends State<YouTubePlayer> {
       appBar: AppBar(
         backgroundColor: AppColors.primary,
         leading: IconButton(
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back_ios_new,
             color: Colors.white,
             size: 18,
@@ -65,17 +65,26 @@ class _YouTubePlayerState extends State<YouTubePlayer> {
           child: Container(
             // height: 2000,
             color: Colors.white,
-            child: Column(
-              children: [
-                const SizedBox(height: 10),
-                YoutubePlayer(
-                  controller: _controller,
-                  showVideoProgressIndicator: true,
-                  progressIndicatorColor: Colors.blueAccent,
-                ),
-                const SizedBox(height: 10),
-                Text(widget.videoDescription),
-              ],
+            child: Padding(
+              padding: const EdgeInsets.all(15),
+              child: Column(
+                children: [
+                  const SizedBox(height: 10),
+                  YoutubePlayer(
+                    controller: _controller,
+                    showVideoProgressIndicator: true,
+                    progressIndicatorColor: Colors.blueAccent,
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                      widget.videoDescription,
+                      style: TextStyle(
+                        fontFamily: 'Lato',
+                        fontSize: 18,
+                      ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

@@ -3,15 +3,14 @@ import 'dart:core';
 import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'dart:io';
-
 import 'package:project/shared_preferences_helper.dart';
 
 class Api{
   static List<String> url = [
+    "https://backend-eosin-five.vercel.app/",
     "http://192.168.222.168:5000/",
+    "http://16.171.31.213/",
     "http://192.168.222.168:8000/",
-    "http://16.171.31.213/"
   ];
   static int index = 0;
   Dio dio = Dio();
@@ -25,11 +24,11 @@ class Api{
 
   //Fetch Problems
   String fetchProblemsURL = "${url[1]}problems";
-  String fetchProblemsDescURL = "${url[0]}problems";
+  String fetchProblemsDescURL = "${url[index]}problems";
 
   //Mark as solved and bookmarked
-  String markSolvedURL = "${url[0]}/problems/solved";
-  String markBookmarkedURL = "${url[0]}/problems/bookmarked";
+  String markSolvedURL = "${url[index]}/problems/solved";
+  String markBookmarkedURL = "${url[index]}/problems/bookmarked";
 
   Future<dynamic> registerUser(
       String name,

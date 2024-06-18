@@ -93,7 +93,6 @@ class _HomeState extends State<Home> {
               SizedBox(
                 height: 50.h,
               ),
-
               ///Appbar
               Padding(
                 padding: EdgeInsets.symmetric(
