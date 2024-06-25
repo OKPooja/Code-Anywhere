@@ -28,34 +28,32 @@ class _LoginScreenState extends State<LoginScreen> {
         message: 'Please enter valid email id',
         primaryColor: Colors.redAccent
       );
-      //Fluttertoast.showToast(msg: "Please enter valid email id");
     } else if(passwordController.text.isEmpty){
       showCustomToast(
         context: context,
         message: 'Please enter password',
         primaryColor: Colors.redAccent
       );
-      //Fluttertoast.showToast(msg: "Please enter password");
     } else{
-      if(await api.loginUser(emailController.text, passwordController.text) == "success"){
+      var response = await api.loginUser(emailController.text, passwordController.text);
+      if(response['status'] == "success"){
         SharedPreferencesHelper.setIsLoggedIn(status: true);
+        SharedPreferencesHelper.setUserName(userName: response['data']['name']);
+        SharedPreferencesHelper.setUserId(userId: response['data']['_id']);
+
         Get.offAll(() => BottomNav(currentIndex: 0));
         showCustomToast(
           context: context,
           message: 'Login Successfully',
         );
-        //Fluttertoast.showToast(msg: "Login Successfully");
       } else{
         showCustomToast(
           context: context,
           message: 'Something went wrong',
           primaryColor: Colors.redAccent
         );
-        //Fluttertoast.showToast(msg: "Something went wrong");
       }
     }
-    // Get.offAll(() => BottomNav(currentIndex: 0));
-    // SharedPreferencesHelper.setIsLoggedIn(status: true);
   }
 
   @override

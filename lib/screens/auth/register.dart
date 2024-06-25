@@ -42,14 +42,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
           primaryColor: Colors.redAccent
       );
     } else{
-      if(await api.registerUser(nameController.text, emailController.text, passwordController.text) == "success"){
+      var response = await api.registerUser(nameController.text, emailController.text, passwordController.text);
+      if(response['status'] == "success"){
         SharedPreferencesHelper.setIsLoggedIn(status: true);
+        SharedPreferencesHelper.setUserId(userId: response['data']['_id']);
         SharedPreferencesHelper.setUserName(userName: nameController.text);
         showCustomToast(
           context: context,
           message: 'Registered Successfully',
         );
-        //Fluttertoast.showToast(msg: "Registered Successfully");
         Get.offAll(() => BottomNav(currentIndex: 0));
       } else{
         showCustomToast(

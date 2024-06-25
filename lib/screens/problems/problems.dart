@@ -28,11 +28,7 @@ class _ProblemsState extends State<Problems> {
     super.initState();
     //problemsList = problemDataList;
     problemsList = widget.problemsList;
-    if(problemsList.isEmpty){
-      //problemsList = problemDataList;
-    }
-    // print("Here is the problems list");
-    // print(problemsList[0]['solved']);
+
   }
 
   Future<void> _refreshProblemsList() async {
@@ -84,9 +80,9 @@ class _ProblemsState extends State<Problems> {
                 ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount:
-                      problemsList.length >= 100 ? 100 : problemsList.length,
-                  //itemCount: problemDataList.length,
+                  // itemCount:
+                  //     problemsList.length >= 100 ? 100 : problemsList.length,
+                  itemCount: problemsList.length,
                   itemBuilder: (BuildContext context, int index) {
                     return GestureDetector(
                       onTap: (){

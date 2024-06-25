@@ -34,10 +34,12 @@ class SharedPreferencesHelper {
         ? ''
         : _prefs.getString("user_id").toString();
   }
+  static void setUserId({required String userId}) {
+    _prefs.setString("user_id", userId);
+  }
   static void setUserName({required String userName}) {
     _prefs.setString("userName", userName);
   }
-
   static String getUserName() {
     return _prefs.getString("userName") ?? "";
   }

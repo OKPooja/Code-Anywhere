@@ -4,12 +4,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:project/screens/learning_section/topics.dart';
 import 'package:project/screens/problems/problems.dart';
+import 'package:project/shared_preferences_helper.dart';
 import 'package:project/utils/colors.dart';
 import 'dart:math' as math;
 import '../../api.dart';
 
 class ProblemsTopics extends StatefulWidget {
-   ProblemsTopics({Key? key}) : super(key: key);
+   const ProblemsTopics({Key? key}) : super(key: key);
 
   @override
   State<ProblemsTopics> createState() => _ProblemsTopicsState();
@@ -21,6 +22,7 @@ class _ProblemsTopicsState extends State<ProblemsTopics> {
   List<dynamic> trees = [];
   List<dynamic> linkedList = [];
   List<dynamic> greedy = [];
+  Map<String, dynamic> solvedProblemsList = {};
   double progressArrays = 0.0;
   double progressStrings = 0.0;
   double progressTrees = 0.0;
@@ -109,6 +111,9 @@ class _ProblemsTopicsState extends State<ProblemsTopics> {
     trees = await api.fetchProblemsWithDesc("Trees");
     linkedList = await api.fetchProblemsWithDesc("Linked List");
     greedy = await api.fetchProblemsWithDesc("Greedy");
+    solvedProblemsList = await api.getSolvedProblems(SharedPreferencesHelper.getUserId());
+
+    print(solvedProblemsList);
 
     int count = 0;
     for(int i = 0; i < arrays.length; i++){

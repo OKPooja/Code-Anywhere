@@ -30,6 +30,12 @@ class Api{
   String markSolvedURL = "${url[index]}/problems/solved";
   String markBookmarkedURL = "${url[index]}/problems/bookmarked";
 
+  //Submit code
+  String submitCodeURL = "${url[index]}code-submit";
+
+  //Get solved problems URL
+  String getSolvedProblemsURL = "${url[index]}get-solved-problems";
+
   Future<dynamic> registerUser(
       String name,
       String email,
@@ -54,7 +60,7 @@ class Api{
         if (kDebugMode) {
           print(response);
         }
-        return response.data['status'];
+        return response.data;
       } catch (e) {
         log(e.toString());
       }
@@ -82,10 +88,7 @@ class Api{
       if (kDebugMode) {
         print(response);
       }
-      SharedPreferencesHelper.setUserName(userName: response.data['data']['name']);
-      print("Username:");
-      print(SharedPreferencesHelper.getUserName());
-      return response.data['status'];
+      return response.data;
     } catch (e) {
       log(e.toString());
     }
@@ -206,6 +209,7 @@ class Api{
       log(e.toString());
     }
   }
+
   Future<dynamic> markBookmarked(
       String problemName,
       ) async {
@@ -228,6 +232,54 @@ class Api{
       }
       return response.data;
     } catch (e) {
+      log(e.toString());
+    }
+  }
+
+  Future<dynamic> submitCode(
+      String userId,
+      String problemId,
+      String verdict,
+      String code
+      ) async {
+
+    if (kDebugMode) {
+      print("Inside submit code");
+    }
+    try {
+      dynamic data = {
+        'user_id' : userId,
+        'problem_id' : problemId,
+        'code' : code,
+        'verdict' : verdict,
+      };
+      if (kDebugMode) {
+        print("$submitCodeURL $data");
+      }
+      Response response = await dio.post(submitCodeURL, data: data);
+      if (kDebugMode) {
+        print(response);
+      }
+      return response.data;
+    } catch(e) {
+      log(e.toString());
+    }
+  }
+
+  Future<dynamic> getSolvedProblems(String userId) async {
+    try {
+      dynamic data = {
+        "user_id" : userId
+      };
+      if (kDebugMode) {
+        print("$getSolvedProblemsURL $data");
+      }
+      Response response = await dio.get(getSolvedProblemsURL, queryParameters: data);
+      if (kDebugMode) {
+        //print(response);
+      }
+      return response.data;
+    } catch(e) {
       log(e.toString());
     }
   }

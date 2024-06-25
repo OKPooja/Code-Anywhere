@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:project/shared_preferences_helper.dart';
 import 'package:project/widgets/custom_toast.dart';
 import '../../api.dart';
 import '../../utils/colors.dart';
 
 class ProblemDescription extends StatefulWidget {
   final Map<String, dynamic> problemDesc;
-  const ProblemDescription({Key? key, required this.problemDesc})
+  const ProblemDescription({Key? key, required this.problemDesc,})
       : super(key: key);
 
   @override
@@ -19,12 +20,17 @@ class _ProblemDescriptionState extends State<ProblemDescription> {
   String description = '';
   List<String> examples = [];
   List<String> constraints = [];
+  String userId = "";
+  String problemId = "";
 
   @override
   void initState() {
     super.initState();
     problemDesc = widget.problemDesc;
-    //print(problemDesc['problem_description']);
+    userId = SharedPreferencesHelper.getUserId();
+    problemId = problemDesc['_id'];
+    print("Problem id: ");
+    print(problemId);
     splitData();
   }
 
@@ -214,8 +220,9 @@ class _ProblemDescriptionState extends State<ProblemDescription> {
       ),
       floatingActionButton: GestureDetector(
         onTap: () async{
-          var result = await api.markAsSolved(problemDesc['problem_name']);
-          if(result['status'] == 'success'){
+          var response = await api.submitCode(userId, problemId, "Accepted", "print('Checking from app')");
+          // var response = await api.markAsSolved(problemDesc['problem_name']);
+          if(response['status'] == 'success'){
             showCustomToast(context: context, message: "Problem status updated successfully");
           }
           setState(() {
