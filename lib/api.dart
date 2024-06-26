@@ -5,36 +5,11 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:project/shared_preferences_helper.dart';
 
+import 'const/auth_token.dart';
+import 'const/urls_const.dart';
+
 class Api{
-  static List<String> url = [
-    "https://backend-eosin-five.vercel.app/",
-    "http://192.168.222.168:5000/",
-    "http://16.171.31.213/",
-    "http://192.168.222.168:8000/",
-  ];
-  static int index = 0;
   Dio dio = Dio();
-
-  //Auth
-  String registerURL = "${url[index]}register";
-  String loginURL = "${url[index]}login";
-
-  //Compiler
-  String compilerURL = "${url[2]}run-code";
-
-  //Fetch Problems
-  String fetchProblemsURL = "${url[1]}problems";
-  String fetchProblemsDescURL = "${url[index]}problems";
-
-  //Mark as solved and bookmarked
-  String markSolvedURL = "${url[index]}/problems/solved";
-  String markBookmarkedURL = "${url[index]}/problems/bookmarked";
-
-  //Submit code
-  String submitCodeURL = "${url[index]}code-submit";
-
-  //Get solved problems URL
-  String getSolvedProblemsURL = "${url[index]}get-solved-problems";
 
   Future<dynamic> registerUser(
       String name,
@@ -279,6 +254,40 @@ class Api{
         //print(response);
       }
       return response.data;
+    } catch(e) {
+      log(e.toString());
+    }
+  }
+
+  Future<dynamic> getAlgoChiefProblems({String id = '', String tag = ''}) async {
+    try {
+      dynamic data;
+      if(id == '' && tag == '') {
+        data = {
+          "auth_token" : authToken,
+        };
+      } else if(id != '') {
+        data = {
+          "auth_token" : authToken,
+          "id ": id,
+        };
+      } else {
+        data = {
+          "auth_token" : authToken,
+          "tag": tag
+        };
+      }
+
+      if (kDebugMode) {
+        print("$fetchAlgoChiefQURL $data");
+      }
+      Response response = await dio.post(fetchAlgoChiefQURL, data: data);
+      Map<String, dynamic> responseData = json.decode(response.data);
+
+      if (kDebugMode) {
+        print(responseData['data']);
+      }
+      return responseData["data"];
     } catch(e) {
       log(e.toString());
     }

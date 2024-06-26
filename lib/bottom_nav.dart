@@ -6,14 +6,15 @@ import 'package:project/screens/compiler/dummyCompiler.dart';
 import 'package:project/screens/home/home.dart';
 import 'package:project/screens/learning_section/edu.dart';
 import 'package:project/screens/problems/ProblemsTopics.dart';
+import 'package:project/screens/problems/platforms.dart';
 import 'package:project/screens/problems/problems.dart';
 import 'package:project/screens/profile/profile.dart';
 import 'package:project/utils/colors.dart';
 
 
 class BottomNav extends StatefulWidget {
-  int currentIndex;
-  BottomNav({required this.currentIndex, super.key});
+  final int currentIndex;
+  const BottomNav({required this.currentIndex, super.key});
 
   @override
   State<BottomNav> createState() => _BottomNavState();
@@ -24,7 +25,8 @@ class _BottomNavState extends State<BottomNav> {
 
   List<Widget> pages = [
     const Home(),
-     ProblemsTopics(),
+    //const ProblemsTopics(),
+    const Platforms(),
     const Edu(),
     const Profile(),
   ];
