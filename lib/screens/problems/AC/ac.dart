@@ -1,12 +1,13 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:project/screens/problems/problems.dart';
+import 'package:project/screens/problems/LC/problems.dart';
 import 'package:project/utils/colors.dart';
-
-import '../../api.dart';
+import '../../../api.dart';
+import '../../../models/problems.dart';
+import 'acProblemsList.dart';
+import 'fetchProblems.dart';
 
 class AlgoChief extends StatefulWidget {
   const AlgoChief({super.key});
@@ -63,34 +64,42 @@ class _AlgoChiefState extends State<AlgoChief> {
           'Organizes and stores data efficiently for various operations and algorithms.',
     },
   ];
-  List<dynamic> list = [];
-  List<dynamic> hashing = [];
-  List<dynamic> twoPointers = [];
-  List<dynamic> bs = [];
-  List<dynamic> math = [];
-  List<dynamic> greedy = [];
-  List<dynamic> graphs = [];
-  List<dynamic> sorting = [];
-  List<dynamic> dp = [];
-  List<dynamic> ds = [];
+  Map<String, List<Problem>> problems = {
+    "Hashing": [],
+    "Two Pointers": [],
+    "Binary Search": [],
+    "Math": [],
+    "Greedy": [],
+    "Graphs": [],
+    "Sorting": [],
+    "Data Structures": [],
+    "DP": [],
+  };
 
   @override
   void initState() {
     initializePrefs();
     super.initState();
   }
-  initializePrefs () async {
-    hashing = await api.getAlgoChiefProblems(tag: "Hashing");
-    twoPointers = await api.getAlgoChiefProblems(tag: "Two Pointers");
-    bs = await api.getAlgoChiefProblems(tag: "Binary Search");
-    math = await api.getAlgoChiefProblems(tag: "Math");
-    greedy = await api.getAlgoChiefProblems(tag: "Greedy");
-    graphs = await api.getAlgoChiefProblems(tag: "Graphs");
-    sorting = await api.getAlgoChiefProblems(tag: "Sortings");
-    ds = await api.getAlgoChiefProblems(tag: "Data Structures");
-    dp = await api.getAlgoChiefProblems(tag: "DP");
 
-    print(ds);
+  Future<void> initializePrefs() async {
+    problems["Hashing"] = await fetchProblems(tag: "Hashing");
+    problems["Two Pointers"] = await fetchProblems(tag: "Two Pointers");
+    problems["Binary Search"] = await fetchProblems(tag: "Binary Search");
+    problems["Math"] = await fetchProblems(tag: "Math");
+    problems["Greedy"] = await fetchProblems(tag: "Greedy");
+    problems["Graphs"] = await fetchProblems(tag: "Graphs");
+    problems["Sorting"] = await fetchProblems(tag: "Sortings");
+    problems["Data Structures"] = await fetchProblems(tag: "Data Structures");
+    problems["DP"] = await fetchProblems(tag: "DP");
+
+    if (kDebugMode) {
+      // print("Data Structures");
+      // for(var problem in problems["Data Structures"]!) {
+      //   print("ID: ${problem.id}, Name: ${problem.name}");
+      // }
+    }
+    setState(() {});
   }
 
   @override
@@ -148,27 +157,8 @@ class _AlgoChiefState extends State<AlgoChief> {
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () {
-                    List<dynamic> problems = [];
-                    if(dataList[index]['title'] == 'Hashing'){
-                      problems = hashing;
-                    } else if(dataList[index]['title'] == 'Two Pointers'){
-                      problems = twoPointers;
-                    } else if(dataList[index]['title'] == 'Binary Search'){
-                      problems = bs;
-                    } else if(dataList[index]['title'] == 'Math'){
-                      problems = math;
-                    } else if(dataList[index]['title'] == 'Greedy'){
-                      problems = greedy;
-                    } else if(dataList[index]['title'] == 'Graphs'){
-                      problems = graphs;
-                    } else if(dataList[index]['title'] == 'Sorting'){
-                      problems = sorting;
-                    } else if(dataList[index]['title'] == 'Data Structures'){
-                      problems = ds;
-                    } else if(dataList[index]['title'] == 'DP'){
-                      problems = dp;
-                    }
-                    Get.to(() => Problems(category: dataList[index]['title']!, problemsList: problems));
+                    String category = dataList[index]['title']!;
+                    Get.to(() => ACProblemsList(category: category, problemsList: problems[category]!));
                   },
                   child: Container(
                     decoration: BoxDecoration(
@@ -200,7 +190,7 @@ class _AlgoChiefState extends State<AlgoChief> {
                               SizedBox(width: 12.h),
                               CircularProgressIndicator(
                                 value: 0.2,
-                                color: AppColors.progressColor,
+                                color: AppColors.darkPurple,
                                 backgroundColor: Colors.white,
                                 strokeWidth: 8.0,
                               ),

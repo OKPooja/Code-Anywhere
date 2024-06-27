@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:project/screens/problems/problem_description.dart';
+import 'package:project/screens/problems/LC/problem_description.dart';
 import 'package:project/utils/colors.dart';
 
-import '../../api.dart';
-import '../../widgets/custom_toast.dart';
+import '../../../api.dart';
+import '../../../widgets/custom_toast.dart';
 
 class Problems extends StatefulWidget {
   final String category;

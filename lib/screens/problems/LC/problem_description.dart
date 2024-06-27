@@ -3,8 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:project/shared_preferences_helper.dart';
 import 'package:project/widgets/custom_toast.dart';
-import '../../api.dart';
-import '../../utils/colors.dart';
+import '../../../api.dart';
+import '../../../utils/colors.dart';
 
 class ProblemDescription extends StatefulWidget {
   final Map<String, dynamic> problemDesc;

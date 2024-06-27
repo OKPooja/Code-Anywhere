@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:project/screens/learning_section/topics.dart';
-import 'package:project/screens/problems/problems.dart';
+import 'package:project/screens/problems/LC/problems.dart';
 import 'package:project/shared_preferences_helper.dart';
 import 'package:project/utils/colors.dart';
 import 'dart:math' as math;
-import '../../api.dart';
+import '../../../api.dart';
 
 class ProblemsTopics extends StatefulWidget {
    const ProblemsTopics({Key? key}) : super(key: key);

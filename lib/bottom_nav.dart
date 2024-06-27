@@ -5,9 +5,9 @@ import 'package:project/screens/compiler/compiler.dart';
 import 'package:project/screens/compiler/dummyCompiler.dart';
 import 'package:project/screens/home/home.dart';
 import 'package:project/screens/learning_section/edu.dart';
-import 'package:project/screens/problems/ProblemsTopics.dart';
+import 'package:project/screens/problems/LC/ProblemsTopics.dart';
 import 'package:project/screens/problems/platforms.dart';
-import 'package:project/screens/problems/problems.dart';
+import 'package:project/screens/problems/LC/problems.dart';
 import 'package:project/screens/profile/profile.dart';
 import 'package:project/utils/colors.dart';
 

@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:project/screens/problems/ac.dart';
+import 'package:project/screens/problems/AC/ac.dart';
 
 import '../../utils/colors.dart';
-import 'ProblemsTopics.dart';
+import 'LC/ProblemsTopics.dart';
 
 class Platforms extends StatefulWidget {
   const Platforms({super.key});

@@ -8,7 +8,7 @@ import 'package:semicircle_indicator/semicircle_indicator.dart';
 import '../../api.dart';
 import '../../shared_preferences_helper.dart';
 import '../../widgets/custom_keyboard.dart';
-import '../problems/problems.dart';
+import '../problems/LC/problems.dart';
 import '../profile/getAllFiles.dart';
 
 class Home extends StatefulWidget {

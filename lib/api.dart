@@ -269,7 +269,7 @@ class Api{
       } else if(id != '') {
         data = {
           "auth_token" : authToken,
-          "id ": id,
+          "id": id,
         };
       } else {
         data = {
@@ -285,9 +285,9 @@ class Api{
       Map<String, dynamic> responseData = json.decode(response.data);
 
       if (kDebugMode) {
-        print(responseData['data']);
+        // print(responseData['data']);
       }
-      return responseData["data"];
+      return responseData;
     } catch(e) {
       log(e.toString());
     }
