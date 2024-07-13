@@ -118,7 +118,7 @@ class _ProfileState extends State<Profile> {
                 InkWell(
                   splashColor: Colors.transparent,
                   onTap: () {
-                    Get.to(() => PersonalDetails());
+                    Get.to(() => const PersonalDetails());
                   },
                   child: ProfilePageCards(
                     image: 'assets/profile/Person.png',
@@ -167,12 +167,13 @@ class _ProfileState extends State<Profile> {
                   height: 10.h,
                 ),
                 InkWell(
+                  splashColor: Colors.transparent,
                   onTap: () {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          backgroundColor: Colors.white70,
+                          backgroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5.0),
                           ),

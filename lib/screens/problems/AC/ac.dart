@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,6 +19,7 @@ class AlgoChief extends StatefulWidget {
 }
 
 class _AlgoChiefState extends State<AlgoChief> {
+  Random random = Random();
   final List<Map<String, String>> dataList = [
     {
       'title': 'Binary Search',
@@ -189,7 +192,7 @@ class _AlgoChiefState extends State<AlgoChief> {
                               ),
                               SizedBox(width: 12.h),
                               CircularProgressIndicator(
-                                value: 0.2,
+                                value: random.nextDouble(),
                                 color: AppColors.darkPurple,
                                 backgroundColor: Colors.white,
                                 strokeWidth: 8.0,

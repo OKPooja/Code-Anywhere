@@ -5,6 +5,8 @@ import 'package:project/shared_preferences_helper.dart';
 import 'package:project/widgets/custom_toast.dart';
 import '../../../api.dart';
 import '../../../utils/colors.dart';
+import '../../../widgets/custom_header.dart';
+import 'Splitview.dart';
 
 class ProblemDescription extends StatefulWidget {
   final Map<String, dynamic> problemDesc;
@@ -92,173 +94,222 @@ class _ProblemDescriptionState extends State<ProblemDescription> {
             fontSize: 38,
           ),
         ),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Column(
+          children: [
+            Container(
+              padding: EdgeInsets.zero,
+              height: 40.h,
+              color: const Color(0xffFFE5E5),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 5.w),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        customButton(
+                          icon: Icons.play_arrow,
+                          text: 'Code',
+                          onTap: () {
+                            Get.to(() => SplitViewScreen(problemDesc: problemDesc,));
+                          },
+                        ),
+                        verticalDivider(),
+                        customButton(
+                          icon: Icons.file_upload_outlined ,
+                          text: 'Submit',
+                          onTap: () {},
+                        ),
+                        verticalDivider(),
+                        customButton(
+                          icon: Icons.access_time_outlined ,
+                          text: 'Submissions',
+                          onTap: () {},
+                        ),
+                      ],
+                    ),
+                    customButton(
+                      icon: Icons.check_circle ,
+                      text: '',
+                      onTap: () {},
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+
+                  SizedBox(height: 10.h),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Description:',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontFamily: 'Lato',
+                          fontWeight: FontWeight.w800,
+                          fontSize: 24,
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Icon(
+                            problemDesc['solved']
+                                ? Icons.check_circle
+                                : Icons.circle,
+                            color: problemDesc['solved']
+                                ? Colors.green
+                                : Colors.transparent,
+                          ),
+                          SizedBox(width: 5.w,),
+                          GestureDetector(
+                            onTap: () async{
+                              var result = await api.markBookmarked(problemDesc['problem_name']);
+                              if(result['status'] == 'success'){
+                                showCustomToast(context: context, message: "Bookmarked status updated successfully");
+                              }
+                              setState(() {
+                                problemDesc['bookmarked'] = !problemDesc['bookmarked'];
+                              });
+                            },
+                            child: Icon(
+                              problemDesc['bookmarked']
+                                  ? Icons.bookmark
+                                  : Icons.bookmark_border,
+                              color: problemDesc['bookmarked']
+                                  ? Colors.black87
+                                  : Colors.black87,
+                            ),
+                          )
+                        ]
+                      ),
+
+                    ],
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    description,
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontFamily: 'Lato',
+                      fontWeight: FontWeight.w100,
+                      fontStyle: FontStyle.italic,
+                      fontSize: 18,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
                   const Text(
-                    'Description:',
+                    'Examples:',
                     style: TextStyle(
                       color: Colors.black,
                       fontFamily: 'Lato',
-                      fontWeight: FontWeight.w800,
+                      fontWeight: FontWeight.w700,
                       fontSize: 24,
                     ),
                   ),
-                  Row(
-                    children: [
-                      Icon(
-                        problemDesc['solved']
-                            ? Icons.check_circle
-                            : Icons.circle,
-                        color: problemDesc['solved']
-                            ? Colors.green
-                            : Colors.transparent,
-                      ),
-                      SizedBox(width: 5.w,),
-                      GestureDetector(
-                        onTap: () async{
-                          var result = await api.markBookmarked(problemDesc['problem_name']);
-                          if(result['status'] == 'success'){
-                            showCustomToast(context: context, message: "Bookmarked status updated successfully");
-                          }
-                          setState(() {
-                            problemDesc['bookmarked'] = !problemDesc['bookmarked'];
-                          });
-                        },
-                        child: Icon(
-                          problemDesc['bookmarked']
-                              ? Icons.bookmark
-                              : Icons.bookmark_border,
-                          color: problemDesc['bookmarked']
-                              ? Colors.black87
-                              : Colors.black87,
+                  const SizedBox(height: 5),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children:
+                        examples.sublist(0, examples.length - 1).map((example) {
+                      return Text(
+                        example,
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontFamily: 'Lato',
+                          fontWeight: FontWeight.w100,
+                          fontStyle: FontStyle.italic,
+                          fontSize: 18,
                         ),
-                      )
-                    ]
+                      );
+                    }).toList(),
                   ),
-
+                  const SizedBox(height: 20),
+                  const Text(
+                    'Constraints:',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontFamily: 'Lato',
+                      fontWeight: FontWeight.w700,
+                      fontSize: 24,
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: constraints.map((constraint) {
+                      return Text(
+                        constraint,
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontFamily: 'Lato',
+                          fontWeight: FontWeight.w100,
+                          fontStyle: FontStyle.italic,
+                          fontSize: 18,
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                  SizedBox(
+                    height: 20.h,
+                  )
                 ],
               ),
-              const SizedBox(height: 5),
-              Text(
-                description,
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'Lato',
-                  fontWeight: FontWeight.w100,
-                  fontStyle: FontStyle.italic,
-                  fontSize: 18,
-                ),
-              ),
-              const SizedBox(height: 20),
-              const Text(
-                'Examples:',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'Lato',
-                  fontWeight: FontWeight.w700,
-                  fontSize: 24,
-                ),
-              ),
-              const SizedBox(height: 5),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children:
-                    examples.sublist(0, examples.length - 1).map((example) {
-                  return Text(
-                    example,
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontFamily: 'Lato',
-                      fontWeight: FontWeight.w100,
-                      fontStyle: FontStyle.italic,
-                      fontSize: 18,
-                    ),
-                  );
-                }).toList(),
-              ),
-              const SizedBox(height: 20),
-              const Text(
-                'Constraints:',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'Lato',
-                  fontWeight: FontWeight.w700,
-                  fontSize: 24,
-                ),
-              ),
-              const SizedBox(height: 5),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: constraints.map((constraint) {
-                  return Text(
-                    constraint,
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontFamily: 'Lato',
-                      fontWeight: FontWeight.w100,
-                      fontStyle: FontStyle.italic,
-                      fontSize: 18,
-                    ),
-                  );
-                }).toList(),
-              ),
-              SizedBox(
-                height: 20.h,
-              )
-            ],
-          ),
+            ),
+          ],
         ),
       ),
-      floatingActionButton: GestureDetector(
-        onTap: () async{
-          var response = await api.submitCode(userId, problemId, "Accepted", "print('Checking from app')");
-          // var response = await api.markAsSolved(problemDesc['problem_name']);
-          if(response['status'] == 'success'){
-            showCustomToast(context: context, message: "Problem status updated successfully");
-          }
-          setState(() {
-            problemDesc['solved'] = !problemDesc['solved'];
-          });
-        },
-        child: Material(
-          elevation: 10,
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.zero,
-              gradient: LinearGradient(
-                colors: [
-                  AppColors.primary,
-                  const Color(0xFF292C72),
-                ],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                problemDesc['solved']
-                ? 'Mark as unsolved'
-                : 'Mark as solved',
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                ),
-              ),
-            ),
-          ),
-        )
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      // floatingActionButton: GestureDetector(
+      //   onTap: () async{
+      //     var response = await api.submitCode(userId, problemId, "Accepted", "print('Checking from app')");
+      //     // var response = await api.markAsSolved(problemDesc['problem_name']);
+      //     if(response['status'] == 'success'){
+      //       showCustomToast(context: context, message: "Problem status updated successfully");
+      //     }
+      //     setState(() {
+      //       problemDesc['solved'] = !problemDesc['solved'];
+      //     });
+      //   },
+      //   child: Material(
+      //     elevation: 10,
+      //     child: Container(
+      //       decoration: BoxDecoration(
+      //         borderRadius: BorderRadius.zero,
+      //         gradient: LinearGradient(
+      //           colors: [
+      //             AppColors.primary,
+      //             const Color(0xFF292C72),
+      //           ],
+      //           begin: Alignment.topCenter,
+      //           end: Alignment.bottomCenter,
+      //         ),
+      //       ),
+      //       child: Padding(
+      //         padding: const EdgeInsets.all(8.0),
+      //         child: Text(
+      //           problemDesc['solved']
+      //           ? 'Mark as unsolved'
+      //           : 'Mark as solved',
+      //           style: const TextStyle(
+      //             color: Colors.white,
+      //             fontSize: 16,
+      //           ),
+      //         ),
+      //       ),
+      //     ),
+      //   )
+      // ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
+
+
 }

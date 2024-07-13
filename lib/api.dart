@@ -3,8 +3,6 @@ import 'dart:core';
 import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:project/shared_preferences_helper.dart';
-
 import 'const/auth_token.dart';
 import 'const/urls_const.dart';
 
@@ -214,8 +212,8 @@ class Api{
   Future<dynamic> submitCode(
       String userId,
       String problemId,
-      String verdict,
-      String code
+      String code,
+      String language
       ) async {
 
     if (kDebugMode) {
@@ -226,7 +224,7 @@ class Api{
         'user_id' : userId,
         'problem_id' : problemId,
         'code' : code,
-        'verdict' : verdict,
+        'language': language
       };
       if (kDebugMode) {
         print("$submitCodeURL $data");

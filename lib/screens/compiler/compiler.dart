@@ -296,7 +296,9 @@ class _CodeInputScreenState extends State<CodeInputScreen> {
       inputTextController.text = '';
     }
     String encodedCode = Uri.encodeComponent(_codeController!.text);
+    print("here is the encoded code");
     print(encodedCode);
+    //var response = await api.submitCode("65dc128f0b5dc3a1cb0f5ab7", "668fd377d1a5744a7117fe99", encodedCode, _selectedLanguage);
     var response = await api.compileCode(encodedCode, inputTextController.text, _selectedLanguage);
     _showOutputBottomSheet(response);
     inputTextController.text = '';
@@ -426,24 +428,6 @@ class _CodeInputScreenState extends State<CodeInputScreen> {
           ),
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   shape: RoundedRectangleBorder(
-      //     borderRadius: BorderRadius.circular(100),
-      //   ),
-      //   backgroundColor: AppColors.primary,
-      //   onPressed: () async {
-      //     print("Code:");
-      //     print(_codeController?.text);
-      //     String encodedCode = Uri.encodeComponent(_codeController!.text);
-      //     print(encodedCode);
-      //     var response =
-      //         await api.compileCode(encodedCode, "", _selectedLanguage);
-      //     _showOutputBottomSheet(response);
-      //   },
-      //   child: const Icon(
-      //     Icons.play_arrow_sharp,
-      //   ),
-      // ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: AppColors.primary,
         type: BottomNavigationBarType.fixed,
