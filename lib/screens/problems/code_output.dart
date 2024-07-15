@@ -144,7 +144,7 @@ class CodeOutput extends StatelessWidget {
                   IconButton(
                     onPressed: () {
                       if (submission.code != null) {
-                        _copyToClipboard(context, submission.code!);
+                        _copyToClipboard(context, Uri.decodeComponent(submission.code!));
                       }
                     },
                     icon: Icon(
