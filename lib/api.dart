@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'const/auth_token.dart';
 import 'const/urls_const.dart';
+import 'models/submissionsModel.dart';
 
 class Api{
   Dio dio = Dio();
@@ -288,6 +289,22 @@ class Api{
       return responseData;
     } catch(e) {
       log(e.toString());
+    }
+  }
+  Future<dynamic> getAllSubmissions(String userId, String problemId) async{
+    try {
+      dynamic data = {
+        'user_id' : userId,
+        'problem_id' : problemId,
+      };
+      Response response = await dio.get(getSubmissionsURL, queryParameters: data);
+      SubmissionsModel submissionsModel = SubmissionsModel.fromJson(response.data);
+      if (kDebugMode) {
+        //print(response);
+      }
+      return submissionsModel.data;
+    } catch(e) {
+      print(e.toString());
     }
   }
 }

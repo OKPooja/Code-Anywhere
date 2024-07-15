@@ -8,6 +8,7 @@ import '../../../utils/colors.dart';
 import '../../../widgets/custom_header.dart';
 import '../../../widgets/custom_toast.dart';
 import '../../compiler/compiler.dart';
+import '../submissions.dart';
 
 class SplitViewScreen extends StatefulWidget {
   final Map<String, dynamic> problemDesc;
@@ -142,7 +143,9 @@ class _SplitViewScreenState extends State<SplitViewScreen> {
                               customButton(
                                 icon: Icons.access_time_outlined ,
                                 text: 'Submissions',
-                                onTap: () {},
+                                onTap: () {
+                                  Get.to(() => SubmissionsScreen(problemId: problemId, userId: userId, problemName: problemDesc['problem_name']));
+                                },
                               ),
                             ],
                           ),

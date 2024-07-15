@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:project/screens/problems/submissions.dart';
 import 'package:project/shared_preferences_helper.dart';
 import 'package:project/widgets/custom_toast.dart';
 import '../../../api.dart';
@@ -27,11 +28,15 @@ class ACProblemDescription extends StatefulWidget {
 class _ProblemDescriptionState extends State<ACProblemDescription> {
   ProblemDesc? problem;
   bool isLoading = true;
+  String userId = "";
+  String problemId = "";
 
   @override
   void initState() {
     super.initState();
     fetchProblemDetails();
+    userId = SharedPreferencesHelper.getUserId();
+    problemId = "668fd377d1a5744a7117fe99";
   }
 
   void fetchProblemDetails() async {
@@ -102,7 +107,9 @@ class _ProblemDescriptionState extends State<ACProblemDescription> {
                                 customButton(
                                   icon: Icons.access_time_outlined ,
                                   text: 'Submissions',
-                                  onTap: () {},
+                                  onTap: () {
+                                    Get.to(() => SubmissionsScreen(problemId: problemId, userId: userId, problemName: widget.problemName));
+                                  },
                                 ),
                               ],
                             ),
