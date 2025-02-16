@@ -27,13 +27,20 @@ class CodeInputScreen extends StatefulWidget {
 class _CodeInputScreenState extends State<CodeInputScreen> {
   CodeController? _codeController;
   //Map<String, TextStyle>? theme = monokaiSublimeTheme;
+  final focusNode = FocusNode();
   String _selectedLanguage = 'C++';
   TextEditingController inputTextController = TextEditingController();
+  bool isKeyboardVisible = false;
 
   @override
   void initState() {
     _codeController?.addListener(() {});
     super.initState();
+    focusNode.addListener(() {
+      setState(() {
+        isKeyboardVisible = focusNode.hasFocus;
+      });
+    });
   }
   Future<String?> _promptFileName(BuildContext context) async {
     TextEditingController fileNameController = TextEditingController();
@@ -374,19 +381,70 @@ class _CodeInputScreenState extends State<CodeInputScreen> {
         ],
       ),
       body: SingleChildScrollView(
-        child: CodeField(
-          lineNumbers: true,
-          onChanged: (String text) {
-            // if (text == '(') {
-            //   _addClosingBracket();
-            // }
-          },
-          controller: _codeController!,
-          cursorColor: AppColors.primary,
-          textStyle: const TextStyle(
-            fontFamily: 'Nunito',
-            fontSize: 20,
-          ),
+        child: Column(
+          children: [
+            CodeField(
+              readOnly: true,
+              onTap: () {
+                setState(() {
+                  isKeyboardVisible = !isKeyboardVisible;
+                  if (isKeyboardVisible) {
+                    FocusScope.of(context).requestFocus(FocusNode());
+                  }
+                });
+              },
+              lineNumbers: true,
+              onChanged: (String text) {
+                // if (text == '(') {
+                //   _addClosingBracket();
+                // }
+              },
+              controller: _codeController!,
+              cursorColor: AppColors.primary,
+              textStyle: const TextStyle(
+                fontFamily: 'Nunito',
+                fontSize: 20,
+              ),
+            ),
+            SizedBox(height: 220.h,),
+            Visibility(
+              visible: isKeyboardVisible,
+              child: Container(
+                color: Colors.grey.shade800,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    _buildKeyboardRow(['0','1', '2', '3', '4', '5', '6', '7', '8', '9']),
+                    _buildKeyboardRow(['{', '}', '[', ']', '(', ')', '<', '>', '.', ';']),
+                    _buildKeyboardRow(['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p']),
+                    _buildKeyboardRow(['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', '"']),
+                    _buildKeyboardRow(['!', 'z', 'x', 'c', 'v', 'b', 'n', 'm', '|', '&']),
+
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 4,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          buildButton(label: '#',),
+                          buildButton(label: '+', ),
+                          buildButton(label: '=', ),
+                          buildButton(label: '-', ),
+                          buildButton(label: 'Space', iconData: Icons.space_bar),
+                          buildButton(label: '_', ),
+                          buildButton(label: 'Shift', iconData: Icons.arrow_upward),
+                          buildButton(label: 'Backspace', iconData: Icons.backspace),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -419,5 +477,87 @@ class _CodeInputScreenState extends State<CodeInputScreen> {
         ],
       ),
     );
+  }
+  ///button keyboard row
+  _buildKeyboardRow(List<String> rowValues) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 3),
+      child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: rowValues.map((e) => buildButton(label: e)).toList()),
+    );
+  }
+  ///button design
+  InkWell buildButton({required String label, IconData? iconData}) {
+    return InkWell(
+      onTap: () {
+        _onButtonTap(label);
+      },
+      child: Material(
+        color: Colors.grey.shade200,
+        borderRadius: BorderRadius.circular(2),
+        elevation: 2,
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
+          decoration: BoxDecoration(
+              color: Colors.grey.shade200,
+              borderRadius: BorderRadius.circular(8)
+          ),
+          child: iconData != null
+              ? Icon(
+            iconData,
+            size: 18,
+            color: Colors.black,
+          )
+              : Text(
+            label,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+              color: Colors.black,
+              fontFamily: 'Nunito',
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+  ///on button tap
+  _onButtonTap(String value) {
+    setState(() {
+      final int cursorPosition = _codeController!.selection.baseOffset;
+      final String currentText = _codeController!.text;
+
+      if (value == 'Backspace') {
+        if (currentText.isNotEmpty && cursorPosition > 0) {
+          final newText = currentText.substring(0, cursorPosition - 1) +
+              currentText.substring(cursorPosition);
+          _codeController!.text = newText;
+          _codeController!.selection = TextSelection.fromPosition(
+              TextPosition(offset: cursorPosition - 1));
+        }
+      } else if (value == 'Enter') {
+        final newText = currentText.substring(0, cursorPosition) +
+            '\n' +
+            currentText.substring(cursorPosition);
+        _codeController!.text = newText;
+        _codeController!.selection = TextSelection.fromPosition(
+            TextPosition(offset: cursorPosition + 1));
+      } else if (value == "Space") {
+        final newText = currentText.substring(0, cursorPosition) +
+            ' ' +
+            currentText.substring(cursorPosition);
+        _codeController!.text = newText;
+        _codeController!.selection = TextSelection.fromPosition(
+            TextPosition(offset: cursorPosition + 1));
+      } else {
+        final newText = currentText.substring(0, cursorPosition) +
+            value +
+            currentText.substring(cursorPosition);
+        _codeController!.text = newText;
+        _codeController!.selection = TextSelection.fromPosition(
+            TextPosition(offset: cursorPosition + value.length));
+      }
+    });
   }
 }

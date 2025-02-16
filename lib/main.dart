@@ -43,6 +43,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
+
       useInheritedMediaQuery: true,
       designSize: Size(MediaQuery.of(context).size.width, MediaQuery.of(context).size.height),
       minTextAdapt: true,

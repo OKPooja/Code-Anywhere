@@ -65,8 +65,8 @@ class _BottomNavState extends State<BottomNav> {
           focusColor: Colors.transparent,
           hoverColor: Colors.transparent,
           onPressed: () async {
-            //Get.to(() => const DummyCodeScreen());
-            Get.to(() => const CodeInputScreen());
+            Get.to(() => const DummyCodeScreen());
+            //Get.to(() => const CodeInputScreen());
           },
           child: Center(
             child: Image.asset(

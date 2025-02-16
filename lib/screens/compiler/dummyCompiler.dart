@@ -1,69 +1,36 @@
 import 'dart:io';
-import 'package:path_provider/path_provider.dart';
 import 'package:code_text_field/code_text_field.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:highlight/languages/python.dart';
 import 'package:highlight/languages/cpp.dart';
 import 'package:highlight/languages/java.dart';
 import 'package:project/screens/compiler/syntax_highlight.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../api.dart';
 import '../../utils/colors.dart';
 import '../../widgets/custom_toast.dart';
+import 'download_files.dart';
 
 class DummyCodeScreen extends StatefulWidget {
-  const DummyCodeScreen({Key? key}) : super(key: key);
+  final String userId;
+  final String problemId;
+
+  const DummyCodeScreen({Key? key, this.userId = "", this.problemId = ""}) : super(key: key);
 
   @override
-  _DummyCodeScreenState createState() => _DummyCodeScreenState();
+  State<DummyCodeScreen> createState() => _DummyCodeScreenState();
 }
 
 class _DummyCodeScreenState extends State<DummyCodeScreen> {
   CodeController? _codeController;
   //Map<String, TextStyle>? theme = monokaiSublimeTheme;
+  final focusNode = FocusNode();
   String _selectedLanguage = 'C++';
   TextEditingController inputTextController = TextEditingController();
   bool isKeyboardVisible = false;
-  final focusNode = FocusNode();
-
-  void _showOutputBottomSheet(String output) {
-    Get.bottomSheet(
-      backgroundColor: Colors.transparent,
-      barrierColor: Colors.transparent,
-      Container(
-        width: double.infinity,
-        color: Colors.white,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text(
-                'Output',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(height: 10),
-              Text(
-                output,
-                style: TextStyle(fontSize: 16),
-              ),
-            ],
-          ),
-        ),
-      ),
-      isScrollControlled: true,
-      enterBottomSheetDuration: const Duration(milliseconds: 300),
-    );
-  }
 
   @override
   void initState() {
@@ -75,81 +42,6 @@ class _DummyCodeScreenState extends State<DummyCodeScreen> {
       });
     });
   }
-  @override
-  void dispose() {
-    focusNode.dispose();
-    super.dispose();
-  }
-  Future<String?> getDownloadPath() async {
-    Directory? directory;
-    try {
-      if (Platform.isIOS) {
-        directory = await getApplicationDocumentsDirectory();
-      } else {
-        directory = Directory('/storage/emulated/0/codeAnywhere');
-        if (!await directory.exists()) {
-          await directory.create(recursive: true);
-        }
-      }
-    } catch (err) {
-      if (kDebugMode) {
-        print("Cannot get download folder path $err");
-      }
-    }
-    return directory?.path;
-  }
-
-  Future<void> requestStoragePermission() async {
-    PermissionStatus status = await Permission.manageExternalStorage.request();
-
-    if (status.isGranted) {
-      if (kDebugMode) {
-        print('Storage permission granted');
-      }
-    } else if (status.isDenied) {
-      if (kDebugMode) {
-        print('Storage permission denied');
-      }
-    } else if (status.isPermanentlyDenied) {
-      if (kDebugMode) {
-        print('Storage permission permanently denied');
-      }
-      openAppSettings();
-    }
-  }
-
-  _download() async {
-    print("Hit download");
-    await requestStoragePermission();
-
-    String? path = await getDownloadPath();
-    if (path != null) {
-      print("Directory: $path");
-      try {
-        String? fileName = await _promptFileName(context);
-        if (fileName!.isNotEmpty) {
-          File f;
-          if (_selectedLanguage == "C++") {
-            f = File("$path/$fileName.cpp");
-          } else if (_selectedLanguage == "Python") {
-            f = File("$path/$fileName.py");
-          } else {
-            f = File("$path/$fileName.java");
-          }
-          await f.writeAsString(_codeController!.text);
-          showCustomToast(
-            context: context,
-            message: 'File saved successfully',
-          );
-        }
-      } catch (e) {
-        print("Error writing file: $e");
-      }
-    } else {
-      print("Download path is null");
-    }
-  }
-
   Future<String?> _promptFileName(BuildContext context) async {
     TextEditingController fileNameController = TextEditingController();
     return showDialog<String?>(
@@ -216,16 +108,6 @@ class _DummyCodeScreenState extends State<DummyCodeScreen> {
       },
     );
   }
-
-  _share() async {
-    if (kDebugMode) {
-      print(_codeController!.text);
-    }
-    if (_codeController!.text.isNotEmpty) {
-      await Share.share(_codeController!.text);
-    }
-  }
-
   Future<String?> _showInputContainer() {
     return showDialog<String?>(
       context: context,
@@ -265,8 +147,7 @@ class _DummyCodeScreenState extends State<DummyCodeScreen> {
             TextButton(
               onPressed: () {
                 print(inputTextController.text);
-                showCustomToast(
-                    context: context, message: "Now, click on Run button!");
+                showCustomToast(context: context, message: "Now, click on Run button!");
                 Navigator.pop(context);
               },
               child: Text(
@@ -298,19 +179,95 @@ class _DummyCodeScreenState extends State<DummyCodeScreen> {
       },
     );
   }
+  _download() async {
+    print("Hit download");
+    await requestStoragePermission();
 
+    String? path = await getDownloadPath();
+    if (path != null) {
+      print("Directory: $path");
+      try {
+        String? fileName = await _promptFileName(context);
+        if(fileName!.isNotEmpty){
+          File f;
+          if (_selectedLanguage == "C++") {
+            f = File("$path/$fileName.cpp");
+          } else if (_selectedLanguage == "Python") {
+            f = File("$path/$fileName.py");
+          } else {
+            f = File("$path/$fileName.java");
+          }
+          await f.writeAsString(_codeController!.text);
+          showCustomToast(
+            context: context,
+            message: 'File saved successfully',
+          );
+        }
+      } catch (e) {
+        print("Error writing file: $e");
+      }
+    } else {
+      print("Download path is null");
+    }
+  }
+  _share() async {
+    if (kDebugMode) {
+      print(_codeController!.text);
+    }
+    if (_codeController!.text.isNotEmpty) {
+      await Share.share(_codeController!.text);
+    }
+  }
+  void _showOutputBottomSheet(String output) {
+    Get.bottomSheet(
+      backgroundColor: Colors.transparent,
+      barrierColor: Colors.transparent,
+      Container(
+        width: double.infinity,
+        color: Colors.white,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                'Output',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: 10),
+              Text(
+                output,
+                style: TextStyle(fontSize: 16),
+              ),
+            ],
+          ),
+        ),
+      ),
+      isScrollControlled: true,
+      enterBottomSheetDuration: const Duration(milliseconds: 300),
+    );
+  }
   void _executeCode() async {
     print("Code:");
     print(_codeController?.text);
     print("Input:");
     print(inputTextController.text);
-    if (inputTextController.text.isEmpty) {
+    if(inputTextController.text.isEmpty){
       inputTextController.text = '';
     }
     String encodedCode = Uri.encodeComponent(_codeController!.text);
-    print(encodedCode);
-    var response = await api.compileCode(
-        encodedCode, inputTextController.text, _selectedLanguage);
+    var response;
+    if(widget.userId == "" && widget.problemId == "") {
+      print("In compile code");
+      response = await api.compileCode(encodedCode, inputTextController.text, _selectedLanguage);
+    } else {
+      print("In submit code");
+      response = await api.submitCode(widget.userId, widget.problemId, encodedCode, _selectedLanguage);
+    }
     _showOutputBottomSheet(response);
     inputTextController.text = '';
   }
@@ -320,10 +277,10 @@ class _DummyCodeScreenState extends State<DummyCodeScreen> {
     var source = '';
     if (_selectedLanguage == 'C++') {
       source =
-          '#include<iostream> \nusing namespace std; \n\nint main(){ \n  cout << "hello"; \n  return 0;\n}';
+      '#include<iostream> \nusing namespace std; \n\nint main(){ \n  cout << "hello"; \n  return 0;\n}';
     } else if (_selectedLanguage == 'Java') {
       source =
-          'import java.util.*;\npublic class Main {\n  public static void main(String[] args) {\n    // Your code here\n    System.out.println("Hello, World!");\n  }\n}';
+      'import java.util.*;\npublic class Main {\n  public static void main(String[] args) {\n    // Your code here\n    System.out.println("Hello, World!");\n  }\n}';
     } else if (_selectedLanguage == 'Python') {
       source = 'print("Enjoy coding")';
     }
@@ -334,9 +291,9 @@ class _DummyCodeScreenState extends State<DummyCodeScreen> {
         r'".*"': const TextStyle(color: Colors.white),
         r'[a-zA-Z0-9]+\(.*\)': const TextStyle(color: Colors.white),
         r'^\s*//.*$':
-            const TextStyle(color: Colors.grey), // Single-line comment
+        const TextStyle(color: Colors.grey), // Single-line comment
         r'/\*[\s\S]*?\*/':
-            const TextStyle(color: Colors.grey), // Multi-line comment
+        const TextStyle(color: Colors.grey), // Multi-line comment
       },
       stringMap: theme,
     );
@@ -427,6 +384,8 @@ class _DummyCodeScreenState extends State<DummyCodeScreen> {
         child: Column(
           children: [
             CodeField(
+              keyboardType:TextInputType.none,
+              readOnly: true,
               onTap: () {
                 setState(() {
                   isKeyboardVisible = !isKeyboardVisible;
@@ -435,6 +394,7 @@ class _DummyCodeScreenState extends State<DummyCodeScreen> {
                   }
                 });
               },
+              lineNumbers: true,
               onChanged: (String text) {
                 // if (text == '(') {
                 //   _addClosingBracket();
@@ -447,6 +407,7 @@ class _DummyCodeScreenState extends State<DummyCodeScreen> {
                 fontSize: 20,
               ),
             ),
+            SizedBox(height: 220.h,),
             Visibility(
               visible: isKeyboardVisible,
               child: Container(
@@ -460,7 +421,6 @@ class _DummyCodeScreenState extends State<DummyCodeScreen> {
                     _buildKeyboardRow(['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p']),
                     _buildKeyboardRow(['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', '"']),
                     _buildKeyboardRow(['!', 'z', 'x', 'c', 'v', 'b', 'n', 'm', '|', '&']),
-
                     Padding(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 10,
@@ -492,7 +452,7 @@ class _DummyCodeScreenState extends State<DummyCodeScreen> {
         type: BottomNavigationBarType.fixed,
         showSelectedLabels: true,
         showUnselectedLabels: true,
-        unselectedItemColor: Colors.white,
+        unselectedItemColor:  Colors.white,
         selectedItemColor: Colors.white,
         onTap: (index) {
           if (index == 0) {
@@ -503,9 +463,17 @@ class _DummyCodeScreenState extends State<DummyCodeScreen> {
         },
         items: const [
           BottomNavigationBarItem(
-              icon: Icon(Icons.input_outlined), label: 'Input'),
+              icon: Icon(
+                  Icons.input_outlined
+              ),
+              label: 'Input'
+          ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.play_arrow_sharp), label: 'Run')
+              icon: Icon(
+                  Icons.play_arrow_sharp
+              ),
+              label: 'Run'
+          )
         ],
       ),
     );
@@ -519,7 +487,6 @@ class _DummyCodeScreenState extends State<DummyCodeScreen> {
           children: rowValues.map((e) => buildButton(label: e)).toList()),
     );
   }
-
   ///button design
   InkWell buildButton({required String label, IconData? iconData}) {
     return InkWell(
@@ -555,26 +522,42 @@ class _DummyCodeScreenState extends State<DummyCodeScreen> {
       ),
     );
   }
-
-
   ///on button tap
-  _onButtonTap(var value) {
-    // setState(() {
-    //   if (value == 'Backspace') {
-    //     if (_codeController?.isNotEmpty) {
-    //       textEditingController.text = textEditingController.text
-    //           .substring(0, textEditingController.text.length - 1);
-    //     }
-    //   } else if (value == 'Enter') {
-    //     final int cursorPosition = textEditingController.selection.baseOffset;
-    //     textEditingController.text = '${textEditingController.text.substring(0, cursorPosition)}\n${textEditingController.text.substring(cursorPosition)}';
-    //     textEditingController.selection = TextSelection.fromPosition(
-    //         TextPosition(offset: cursorPosition + 1));
-    //   } else if (value == "Space") {
-    //     textEditingController.text += " ";
-    //   } else {
-    //     textEditingController.text += value;
-    //   }
-    // });
+  _onButtonTap(String value) {
+    setState(() {
+      final int cursorPosition = _codeController!.selection.baseOffset;
+      final String currentText = _codeController!.text;
+
+      if (value == 'Backspace') {
+        if (currentText.isNotEmpty && cursorPosition > 0) {
+          final newText = currentText.substring(0, cursorPosition - 1) +
+              currentText.substring(cursorPosition);
+          _codeController!.text = newText;
+          _codeController!.selection = TextSelection.fromPosition(
+              TextPosition(offset: cursorPosition - 1));
+        }
+      } else if (value == 'Enter') {
+        final newText = currentText.substring(0, cursorPosition) +
+            '\n' +
+            currentText.substring(cursorPosition);
+        _codeController!.text = newText;
+        _codeController!.selection = TextSelection.fromPosition(
+            TextPosition(offset: cursorPosition + 1));
+      } else if (value == "Space") {
+        final newText = currentText.substring(0, cursorPosition) +
+            ' ' +
+            currentText.substring(cursorPosition);
+        _codeController!.text = newText;
+        _codeController!.selection = TextSelection.fromPosition(
+            TextPosition(offset: cursorPosition + 1));
+      } else {
+        final newText = currentText.substring(0, cursorPosition) +
+            value +
+            currentText.substring(cursorPosition);
+        _codeController!.text = newText;
+        _codeController!.selection = TextSelection.fromPosition(
+            TextPosition(offset: cursorPosition + value.length));
+      }
+    });
   }
 }
